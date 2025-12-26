@@ -1,0 +1,23 @@
+# --- Root Ignores ---
+node_modules/
+.DS_Store
+
+# --- Mobile (Expo) Ignores ---
+.expo/
+dist/
+web-build/
+*.jks
+*.p12
+*.key
+*.keystore
+
+# --- Backend (Next.js) Ignores ---
+.next/
+out/
+build/
+.vercel/
+
+# --- Environment Variables (VERY IMPORTANT) ---
+.env
+.env.local
+*.env.js

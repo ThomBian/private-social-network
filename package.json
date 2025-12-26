@@ -1,0 +1,8 @@
+{
+  "name": "social_network_root",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
