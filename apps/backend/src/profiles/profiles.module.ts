@@ -4,7 +4,7 @@ import { ProfilesResolver } from './profiles.resolver';
 import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [],
   providers: [ProfilesService, ProfilesResolver],
   exports: [ProfilesService],
 })

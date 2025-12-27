@@ -14,6 +14,7 @@ async function main() {
     data: {
       username: 'alice',
       email: 'alice@example.com',
+      phoneNumber: '1234567890',
       profile: {
         create: {
           bio: 'Alice bio',
@@ -36,6 +37,7 @@ async function main() {
     data: {
       username: 'bob',
       email: 'bob@example.com',
+      phoneNumber: '1234567890',
       profile: {
         create: {
           bio: 'Bob bio',

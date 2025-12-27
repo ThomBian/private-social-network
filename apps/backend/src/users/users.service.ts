@@ -48,19 +48,4 @@ export class UsersService {
       throw error;
     }
   }
-
-  async create(data: { username: string; email: string }) {
-    try {
-      return await this.prisma.user.create({
-        data,
-        include: {
-          profile: true,
-          posts: true,
-        },
-      });
-    } catch (error) {
-      console.error('Error creating user:', error);
-      throw error;
-    }
-  }
 }

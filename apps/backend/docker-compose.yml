@@ -16,5 +16,11 @@ services:       # The list of "mini-computers" we want
       - postgres_data:/var/lib/postgresql/data 
       # This maps a folder inside Docker to the DB storage, so data survives restarts.
 
+  redis:
+    image: redis:alpine
+    container_name: social_redis
+    ports:
+      - '6379:6379'
+
 volumes:        # Define the volume storage
   postgres_data:

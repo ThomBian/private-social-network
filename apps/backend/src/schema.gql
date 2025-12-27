@@ -13,6 +13,7 @@ type User {
   id: ID!
   username: String!
   email: String!
+  phoneNumber: String!
   createdAt: DateTime!
   profile: Profile
   posts: [Post!]
@@ -45,6 +46,8 @@ type Query {
 }
 
 type Mutation {
+  requestPhoneVerificationCode(phoneNumber: String!): Float!
+  loginWithPhoneCode(phoneNumber: String!, code: Float!): User
   updateProfile(userId: ID!, bio: String!): Profile!
   createPost(caption: String!, img: String!, size: String!, type: String!, authorId: String!): Post!
   deletePost(id: String!): Post!

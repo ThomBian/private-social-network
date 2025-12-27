@@ -14,6 +14,9 @@ export class User {
   email: string;
 
   @Field()
+  phoneNumber: string;
+
+  @Field()
   createdAt: Date;
 
   @Field(() => Profile, { nullable: true })
