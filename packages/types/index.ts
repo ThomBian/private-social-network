@@ -5,4 +5,10 @@ export interface Post {
   size: "tiny" | "rectangle" | "big";
   type: "image";
   caption: string;
+  author: User;
+}
+
+export interface User {
+  id: string;
+  username: string;
 }

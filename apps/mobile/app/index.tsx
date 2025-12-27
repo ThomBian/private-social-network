@@ -1,59 +1,67 @@
-import { FlatList, StatusBar, StyleSheet } from "react-native";
+import { Text, FlatList, StatusBar, StyleSheet } from "react-native";
 
 import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../src/components/feed/Header";
 import Post from "../src/components/feed/Post";
+import { useQuery } from "urql";
+import { useMemo } from "react";
+import { Post as PostType } from "@social/types";
 
-const DATA = [
-  {
-    id: "1",
-    username: "Alice",
-    text: "Nature walk 🌲",
-    img: "https://picsum.photos/600/600",
-  },
-  {
-    id: "2",
-    username: "Bob",
-    text: "My new keyboard ⌨️",
-    img: "https://picsum.photos/600/601",
-  },
-  {
-    id: "3",
-    username: "Charlie",
-    text: "Coffee time ☕",
-    img: "https://picsum.photos/600/602",
-  },
-  {
-    id: "4",
-    username: "David",
-    text: "Ideas loading... 💡",
-    img: "https://picsum.photos/600/603",
-  },
-  {
-    id: "5",
-    username: "Eva",
-    text: "Blue Sky ☁️",
-    img: "https://picsum.photos/600/604",
-  },
-];
+const feedQuery = `
+  query {
+    feed {
+      id
+      caption
+      author {
+        username
+      }
+    }
+  }
+`;
 
 export default function Feed() {
+  const [{ data, fetching, error }] = useQuery({ query: feedQuery });
+
+  const posts = useMemo(() => {
+    if (fetching || error || !data) {
+      return [];
+    }
+    return data.feed as PostType[];
+  }, [data, fetching, error]);
+
+  let content;
+
+  if (fetching) {
+    content = <Text>Loading...</Text>;
+  } else if (error) {
+    content = (
+      <>
+        <Text>Error loading feed.</Text>
+        <Text>{error.message}</Text>
+      </>
+    );
+  } else {
+    content = (
+      <FlatList
+        data={posts}
+        style={{ width: "100%", padding: 16 }}
+        renderItem={({ item }) => (
+          <Post username={item.author.username} text={item.caption} />
+        )}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={Header}
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
       <Stack.Screen options={{ headerShown: false }} />
 
-      <FlatList
-        data={DATA}
-        style={{ width: "100%", padding: 16 }}
-        renderItem={({ item }) => (
-          <Post username={item.username} text={item.text} />
-        )}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={Header}
-      />
+      {content}
     </SafeAreaView>
   );
 }

@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PostSize {
+  tiny
+  rectangle
+  big
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  profile Profile?
+  posts   Post[]
+}
+
+model Profile {
+  id     String @id @default(uuid())
+  bio    String
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  caption   String
+  post_date DateTime @default(now())
+  img       String
+  size      PostSize @default(tiny)
+  type      String   @default("image")
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+}

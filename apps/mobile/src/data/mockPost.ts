@@ -1,6 +1,6 @@
-import { BentoPost } from "../types/bento";
+import { Post } from "@social/types";
 
-export const RAW_POSTS: BentoPost[] = [
+export const RAW_POSTS: Post[] = [
   // --- JANUARY 2025 ---
   {
     id: "post-01",

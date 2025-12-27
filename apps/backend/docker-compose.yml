@@ -1,0 +1,20 @@
+services:       # The list of "mini-computers" we want
+  postgres:     # We name this service "postgres"
+    image: postgres:15-alpine           # The "Blueprint". Alpine is a super lightweight version of Linux.
+    container_name: social_network_db   # A friendly name to find it later
+    restart: always                     # If it crashes, start it again automatically
+    
+    environment:                        # Variables needed to set up the DB
+      POSTGRES_USER: myuser             # Your Username
+      POSTGRES_PASSWORD: mypassword     # Your Password
+      POSTGRES_DB: social_db            # The name of the database to create
+    
+    ports:
+      - '5432:5432'                     # IMPORTANT: Map port 5432 on your laptop to port 5432 inside the container
+    
+    volumes:                            # PERSISTENCE (Saving Data)
+      - postgres_data:/var/lib/postgresql/data 
+      # This maps a folder inside Docker to the DB storage, so data survives restarts.
+
+volumes:        # Define the volume storage
+  postgres_data:

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { BentoItem, BentoPost } from "../../types/bento";
+import { BentoItem } from "../../types/bento";
+import { Post } from "@social/types";
 import { DateBadge } from "./DateBadge";
 
 interface Props {
@@ -34,7 +35,7 @@ export default function BentoTile({ item, width, height }: Props) {
     );
   }
 
-  const post = item as BentoPost;
+  const post = item as Post;
   return (
     <TouchableOpacity onPress={() => alert(`view post ${post.id}`)}>
       <View style={[styles.post, { width, height }]} />

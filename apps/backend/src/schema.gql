@@ -1,0 +1,51 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Profile {
+  id: ID!
+  bio: String!
+  userId: ID!
+  user: User!
+}
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  createdAt: DateTime!
+  profile: Profile
+  posts: [Post!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Post {
+  id: ID!
+  img: String!
+  post_date: DateTime!
+  size: String!
+  type: String!
+  caption: String!
+  author: User!
+  authorId: ID!
+}
+
+type Query {
+  users: [User!]!
+  user(id: ID!): User
+  userByUsername(username: String!): User
+  profile(userId: ID!): Profile
+  feed: [Post!]!
+  profilePosts(username: String!): [Post!]!
+  post(id: String!): Post
+}
+
+type Mutation {
+  updateProfile(userId: ID!, bio: String!): Profile!
+  createPost(caption: String!, img: String!, size: String!, type: String!, authorId: String!): Post!
+  deletePost(id: String!): Post!
+}
