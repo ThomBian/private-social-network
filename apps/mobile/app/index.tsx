@@ -7,6 +7,7 @@ import Post from "../src/components/feed/Post";
 import { useQuery } from "urql";
 import { useMemo } from "react";
 import { Post as PostType } from "@social/types";
+import { EmptyState } from "../src/components/feed/EmptyState";
 
 const feedQuery = `
   query {
@@ -51,6 +52,7 @@ export default function Feed() {
         )}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={Header}
+        ListEmptyComponent={EmptyState}
       />
     );
   }

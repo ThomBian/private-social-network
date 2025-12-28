@@ -34,7 +34,7 @@ export default function Header() {
         <IonIcons name="add" color="#000" size={28} />
       </TouchableOpacity>
 
-      <Text style={styles.title}>Welcome back! 👋</Text>
+      <Text style={styles.title}>Nom du reseau</Text>
 
       <TouchableOpacity
         style={styles.iconButton}
