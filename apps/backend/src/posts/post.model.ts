@@ -13,7 +13,7 @@ export class Post {
   post_date: Date;
 
   @Field()
-  size: 'tiny' | 'rectangle' | 'big';
+  size: 'rectangle' | 'square';
 
   @Field()
   type: string;

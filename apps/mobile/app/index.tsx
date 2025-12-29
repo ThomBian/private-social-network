@@ -1,19 +1,20 @@
-import { Text, FlatList, StatusBar, StyleSheet } from "react-native";
-
-import { Stack } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList, StatusBar } from "react-native";
 import Header from "../src/components/feed/Header";
 import Post from "../src/components/feed/Post";
 import { useQuery } from "urql";
 import { useMemo } from "react";
 import { Post as PostType } from "@social/types";
 import { EmptyState } from "../src/components/feed/EmptyState";
+import { Text } from "../src/components/design-kit/Text";
+import { Screen } from "../src/components/design-kit/Screen";
 
 const feedQuery = `
   query {
     feed {
       id
       caption
+      img
+      size
       author {
         username
       }
@@ -38,7 +39,7 @@ export default function Feed() {
   } else if (error) {
     content = (
       <>
-        <Text>Error loading feed.</Text>
+        <Text>Error while loading feed.</Text>
         <Text>{error.message}</Text>
       </>
     );
@@ -46,9 +47,14 @@ export default function Feed() {
     content = (
       <FlatList
         data={posts}
-        style={{ width: "100%", padding: 16 }}
+        scrollEnabled={true}
         renderItem={({ item }) => (
-          <Post username={item.author.username} text={item.caption} />
+          <Post
+            username={item.author.username}
+            caption={item.caption}
+            img={item.img}
+            size={item.size}
+          />
         )}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={Header}
@@ -58,20 +64,10 @@ export default function Feed() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Screen>
       <StatusBar barStyle="dark-content" />
 
-      <Stack.Screen options={{ headerShown: false }} />
-
       {content}
-    </SafeAreaView>
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

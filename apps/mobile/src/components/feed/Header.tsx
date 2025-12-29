@@ -1,5 +1,8 @@
-import IonIcons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
+import { StyleSheet, View } from "react-native";
+import { Text } from "../design-kit/Text";
+import { theme } from "../../theme/theme";
+import { Button } from "../design-kit/Button";
 
 const styles = StyleSheet.create({
   container: {
@@ -11,10 +14,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
     marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    paddingHorizontal: theme.spacing.s,
   },
   iconButton: {
     width: 28,
@@ -25,23 +25,17 @@ const styles = StyleSheet.create({
 });
 
 export default function Header() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => alert("Open new Pub")}
-      >
-        <IonIcons name="add" color="#000" size={28} />
-      </TouchableOpacity>
+      <Button
+        icon="add"
+        variant="ghost"
+        onPress={() => router.push("/create")}
+      />
 
-      <Text style={styles.title}>Nom du reseau</Text>
-
-      <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => alert("See Likes!")}
-      >
-        <IonIcons name="heart-outline" size={28} color="black" />
-      </TouchableOpacity>
+      <Text variant="h2">Papaya 🥭</Text>
     </View>
   );
 }

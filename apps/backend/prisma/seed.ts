@@ -25,7 +25,7 @@ async function main() {
           {
             caption: 'Alice first post',
             img: 'alice1.jpg',
-            size: 'big',
+            size: 'square',
             type: 'image',
           },
         ],
@@ -48,13 +48,13 @@ async function main() {
           {
             caption: 'Bob first post',
             img: 'bob1.jpg',
-            size: 'big',
+            size: 'square',
             type: 'image',
           },
           {
             caption: 'Bob second post',
             img: 'bob2.jpg',
-            size: 'tiny',
+            size: 'rectangle',
             type: 'image',
           },
         ],

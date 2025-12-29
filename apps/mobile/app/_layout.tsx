@@ -6,7 +6,7 @@ import { AuthProvider, useAuth } from "../src/context/AuthContext";
 import { useEffect } from "react";
 
 const API_URL = Platform.select({
-  ios: "http://192.168.1.164:3000/graphql",
+  ios: "http://192.168.68.105:3000/graphql",
   android: "http://10.0.2.2:3000/graphql",
   default: "http://localhost:3000/graphql",
 });
@@ -50,6 +50,7 @@ function RootLayoutNav() {
       <Stack.Screen name="login" options={{ animation: "fade" }} />
       <Stack.Screen name="index" />
       <Stack.Screen name="[username]" />
+      <Stack.Screen name="create" options={{ title: "Nouveau postr" }} />
     </Stack>
   );
 }

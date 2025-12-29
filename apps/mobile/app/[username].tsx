@@ -1,27 +1,15 @@
-import { Stack, useLocalSearchParams } from "expo-router";
-import { SectionList, StyleSheet, Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { Alert, SectionList, StyleSheet, View } from "react-native";
 import { BentoRowRenderer } from "../src/components/profile/BentoRowRenderer";
 import { groupPostsByMonth } from "../src/utils/bentoEngine";
 import { gql, useQuery } from "urql";
 import { useMemo } from "react";
 import { Post } from "@social/types";
-
-export const PAGE_PADDING = 4;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: PAGE_PADDING,
-  },
-  sectionHeader: {
-    paddingVertical: 4,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-});
+import { Text } from "../src/components/design-kit/Text";
+import { Screen } from "../src/components/design-kit/Screen";
+import { Button } from "../src/components/design-kit/Button";
+import { theme } from "../src/theme/theme";
+import { useAuth } from "../src/context/AuthContext";
 
 const PROFILE_QUERY = gql`
   query ($username: String!) {
@@ -38,6 +26,7 @@ const PROFILE_QUERY = gql`
 
 export default function Profile() {
   const { username } = useLocalSearchParams();
+  const { signOut, user } = useAuth();
 
   const [{ data, fetching, error }] = useQuery({
     query: PROFILE_QUERY,
@@ -53,34 +42,49 @@ export default function Profile() {
 
   if (fetching) {
     return (
-      <View
-        style={
-          (styles.container,
-          { height: "100%", alignItems: "center", justifyContent: "center" })
-        }
-      >
+      <Screen>
         <Text>Loading...</Text>
-      </View>
+      </Screen>
     );
   }
 
   if (error) {
     return (
-      <View
-        style={
-          (styles.container,
-          { height: "100%", alignItems: "center", justifyContent: "center" })
-        }
-      >
+      <Screen>
         <Text>Error loading profile posts.</Text>
         <Text>{error.message}</Text>
-      </View>
+      </Screen>
     );
   }
 
+  const handleLogout = () => {
+    Alert.alert("Confirm Logout", "Are you sure you want to log out?", [
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Logout",
+        onPress: () => signOut(),
+        style: "destructive",
+      },
+    ]);
+  };
+
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ title: `@${username}`, headerShown: true }} />
+    <Screen>
+      <View style={styles.header}>
+        <Text variant="h1">{username}</Text>
+
+        {username === user?.username && (
+          <Button
+            icon="log-out-outline"
+            onPress={handleLogout}
+            variant="ghost"
+          />
+        )}
+      </View>
 
       <SectionList
         sections={sections}
@@ -89,11 +93,28 @@ export default function Profile() {
         stickyHeaderHiddenOnScroll
         renderSectionHeader={({ section: { title } }) => (
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{title}</Text>
+            <Text variant="h1">{title}</Text>
           </View>
         )}
         contentContainerStyle={{ paddingBottom: 200 }}
       />
-    </View>
+    </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    borderBottomWidth: 1,
+    borderColor: theme.colors.border,
+    paddingVertical: theme.spacing.m,
+    marginBottom: theme.spacing.m,
+    gap: theme.spacing.s,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  sectionHeader: {
+    paddingVertical: theme.spacing.s,
+  },
+});

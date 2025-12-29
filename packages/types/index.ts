@@ -2,7 +2,7 @@ export interface Post {
   id: string;
   img: string;
   post_date: string;
-  size: "tiny" | "rectangle" | "big";
+  size: "square" | "rectangle";
   type: "image";
   caption: string;
   author: User;

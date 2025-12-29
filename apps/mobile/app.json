@@ -1,16 +1,20 @@
 {
   "expo": {
-    "name": "private-social-network",
-    "slug": "private-social-network",
+    "name": "Papaya",
+    "slug": "papaya-social",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "private-social-network",
+    "scheme": "papaya",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.thombian.privatesocialnetwork"
+      "bundleIdentifier": "com.thombian.privatesocialnetwork",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow Papaya to access your photos to create posts.",
+        "NSPhotoLibraryAddOnlyUsageDescription": "Allow Papaya to save photos."
+      }
     },
     "android": {
       "adaptiveIcon": {

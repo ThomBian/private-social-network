@@ -72,7 +72,7 @@ export class PostsService {
   async create(data: {
     caption: string;
     img: string;
-    size: 'tiny' | 'rectangle' | 'big';
+    size: 'rectangle' | 'square';
     type: string;
     authorId: string;
   }): Promise<Post> {

@@ -29,7 +29,7 @@ export class PostResolver {
   async createPost(
     @Args('caption', { type: () => String }) caption: string,
     @Args('img', { type: () => String }) img: string,
-    @Args('size', { type: () => String }) size: 'tiny' | 'rectangle' | 'big',
+    @Args('size', { type: () => String }) size: 'rectangle' | 'square',
     @Args('type', { type: () => String }) type: string,
     @Args('authorId', { type: () => String }) authorId: string,
   ): Promise<Post> {

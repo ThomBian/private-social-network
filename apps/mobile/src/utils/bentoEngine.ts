@@ -1,4 +1,5 @@
-import { BentoPost, BentoRow } from "../types/bento";
+import { BentoRow } from "../types/bento";
+import { Post as BentoPost } from "@social/types";
 
 function getMonthTitle(dateStr: string): string {
   const date = new Date(dateStr);
@@ -32,49 +33,44 @@ export function groupPostsByMonth(posts: BentoPost[]) {
   return sections;
 }
 
-const FILLE_ID_PREFIX = "filler-";
-
 function organisePostsIntoBento(posts: BentoPost[]): BentoRow[] {
   const rows: BentoRow[] = [];
-  let pendingTiny: BentoPost | undefined = undefined;
+  let pendingSquare: BentoPost | undefined = undefined;
 
   posts.forEach((post) => {
-    if (post.size === "rectangle" || post.size === "big") {
-      if (pendingTiny) {
+    if (post.size === "rectangle") {
+      if (pendingSquare) {
         rows.push({
           id: "row-with-pending-tiny-" + post.id,
-          type: "row_of_tinies",
-          items: [
-            pendingTiny,
-            { type: "filler", id: FILLE_ID_PREFIX + post.id },
-          ],
+          type: "row_square",
+          items: [pendingSquare],
         });
-        pendingTiny = undefined;
+        pendingSquare = undefined;
       }
       rows.push({
         id: "row_" + post.id,
         type: `row_${post.size}`,
         items: [post],
       });
-    } else if (post.size === "tiny") {
-      if (pendingTiny) {
+    } else if (post.size === "square") {
+      if (pendingSquare) {
         rows.push({
           id: "row_of_tinies_" + post.id,
           type: "row_of_tinies",
-          items: [pendingTiny, post],
+          items: [pendingSquare, post],
         });
-        pendingTiny = undefined;
+        pendingSquare = undefined;
       } else {
-        pendingTiny = post;
+        pendingSquare = post;
       }
     }
   });
 
-  if (pendingTiny) {
+  if (pendingSquare) {
     rows.push({
       id: "row_of_tinies_final",
-      type: "row_of_tinies",
-      items: [pendingTiny, { type: "filler", id: FILLE_ID_PREFIX + "end" }],
+      type: "row_square",
+      items: [pendingSquare],
     });
   }
 

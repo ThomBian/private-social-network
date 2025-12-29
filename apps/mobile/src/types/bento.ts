@@ -1,13 +1,5 @@
 import { Post as BentoPost } from "@social/types";
 
-export interface BentoFiller {
-  type: "filler";
-  id: string;
-}
-
-export type BentoItem = BentoPost | BentoFiller;
-
-type BentoRowBig = { type: "row_big"; items: [BentoPost]; id: string };
 type BentoRowRectangle = {
   type: "row_rectangle";
   items: [BentoPost];
@@ -15,12 +7,17 @@ type BentoRowRectangle = {
 };
 type BentoRowOfTinies = {
   type: "row_of_tinies";
-  items: [BentoItem, BentoItem];
+  items: [BentoPost, BentoPost];
   id: string;
 };
 
-export type BentoRow = BentoRowBig | BentoRowRectangle | BentoRowOfTinies;
+type BentoRowSquare = {
+  type: "row_square";
+  items: [BentoPost];
+  id: string;
+};
 
+export type BentoRow = BentoRowRectangle | BentoRowOfTinies | BentoRowSquare;
 export type BentoSection = {
   title: string;
   data: BentoRow[];

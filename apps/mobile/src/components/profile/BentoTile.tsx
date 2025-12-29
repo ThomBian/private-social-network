@@ -1,15 +1,13 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { BentoItem } from "../../types/bento";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Post } from "@social/types";
 import { DateBadge } from "./DateBadge";
+import { Image } from "expo-image";
 
 interface Props {
-  item: BentoItem;
+  item: Post;
   width: number;
   height: number;
 }
-
-const FILLER_EMOJIS = ["📸", "🌴", "✨", "💭", "🎨", "👀"];
 
 const styles = StyleSheet.create({
   filler: {
@@ -25,21 +23,10 @@ const styles = StyleSheet.create({
 });
 
 export default function BentoTile({ item, width, height }: Props) {
-  if (item.type === "filler") {
-    const emojiIndex = item.id.length % FILLER_EMOJIS.length;
-    const emoji = FILLER_EMOJIS[emojiIndex];
-    return (
-      <View style={[styles.filler, { width, height }]}>
-        <Text>{emoji}</Text>
-      </View>
-    );
-  }
-
-  const post = item as Post;
   return (
-    <TouchableOpacity onPress={() => alert(`view post ${post.id}`)}>
-      <View style={[styles.post, { width, height }]} />
-      <DateBadge dateString={post.post_date} />
+    <TouchableOpacity onPress={() => alert(`view post ${item.id}`)}>
+      <Image source={item.img} style={[styles.post, { width, height }]} />
+      <DateBadge dateString={item.post_date} />
     </TouchableOpacity>
   );
 }

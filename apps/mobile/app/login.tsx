@@ -6,11 +6,11 @@ import {
   Platform,
   StyleSheet,
   View,
-  Text,
   TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
+
+import { Text } from "../src/components/design-kit/Text";
+import { Button } from "../src/components/design-kit/Button";
 
 const REQUEST_PHONE_OTP_MUTATION = gql`
   mutation ($phoneNumber: String!) {
@@ -38,42 +38,12 @@ const styles = StyleSheet.create({
   content: {
     padding: 40,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "800",
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 40,
-  },
   input: {
     fontSize: 18,
     borderBottomWidth: 2,
     borderBottomColor: "#eee",
     paddingVertical: 10,
     marginBottom: 40,
-  },
-  button: {
-    backgroundColor: "#000",
-    paddingVertical: 18,
-    borderRadius: 30,
-    alignItems: "center",
-  },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  backLink: {
-    marginTop: 20,
-  },
-  backText: {
-    color: "#666",
   },
 });
 
@@ -126,13 +96,13 @@ export default function LoginScreen() {
       style={styles.container}
     >
       <View style={styles.content}>
-        <Text style={styles.title}>
+        <Text variant="h1">
           {step === "phone"
             ? "What's your phone number?"
             : "Enter validation code"}
         </Text>
 
-        <Text style={styles.subtitle}>
+        <Text variant="h2">
           {step === "phone"
             ? "A 4-digit code will be sent to your phone."
             : `Code sent to ${phoneNumber}`}
@@ -162,27 +132,18 @@ export default function LoginScreen() {
           />
         )}
 
-        <TouchableOpacity
-          style={[styles.button, isLoading && styles.buttonDisabled]}
+        <Button
           onPress={step === "phone" ? handleRequestOtp : handleVerifyCode}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator color={"white"} />
-          ) : (
-            <Text style={styles.buttonText}>
-              {step === "phone" ? "Send Code" : "Continue"}
-            </Text>
-          )}
-        </TouchableOpacity>
+          loading={isLoading}
+          label={step === "phone" ? "Send Code" : "Continue"}
+        />
 
         {step === "code" && !isLoading && (
-          <TouchableOpacity
-            style={styles.backLink}
+          <Button
+            variant="ghost"
             onPress={() => setStep("phone")}
-          >
-            <Text style={styles.backText}>Change phone number</Text>
-          </TouchableOpacity>
+            label="Change phone number"
+          />
         )}
       </View>
     </KeyboardAvoidingView>

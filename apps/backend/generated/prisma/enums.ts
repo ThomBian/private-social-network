@@ -10,9 +10,8 @@
 */
 
 export const PostSize = {
-  tiny: 'tiny',
   rectangle: 'rectangle',
-  big: 'big'
+  square: 'square'
 } as const
 
 export type PostSize = (typeof PostSize)[keyof typeof PostSize]

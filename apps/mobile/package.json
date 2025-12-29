@@ -27,6 +27,7 @@
     "expo-haptics": "~15.0.7",
     "expo-image": "~3.0.8",
     "expo-linking": "~8.0.8",
+    "expo-media-library": "^18.2.1",
     "expo-router": "~6.0.8",
     "expo-secure-store": "~15.0.8",
     "expo-splash-screen": "~31.0.10",
@@ -48,6 +49,7 @@
     "urql": "^5.0.1"
   },
   "devDependencies": {
+    "@expo/config-plugins": "^54.0.4",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",

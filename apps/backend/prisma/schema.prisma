@@ -11,9 +11,8 @@ datasource db {
 }
 
 enum PostSize {
-  tiny
   rectangle
-  big
+  square
 }
 
 model User {
@@ -39,7 +38,7 @@ model Post {
   caption   String
   post_date DateTime @default(now())
   img       String
-  size      PostSize @default(tiny)
+  size      PostSize @default(rectangle)
   type      String   @default("image")
 
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)

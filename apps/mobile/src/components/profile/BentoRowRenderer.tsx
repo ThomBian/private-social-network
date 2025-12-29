@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import { BentoRow } from "../../types/bento";
 import BentoTile from "./BentoTile";
 
-const SCREEN_WIDTH = Dimensions.get("window").width - 8;
+const SCREEN_WIDTH = Dimensions.get("window").width - 16;
 const GAP = 2;
 
 const styles = StyleSheet.create({
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 });
 
 export const BentoRowRenderer = ({ row }: { row: BentoRow }) => {
-  if (row.type === "row_big") {
+  if (row.type === "row_square") {
     return (
       <View style={styles.row}>
         <BentoTile
