@@ -1,12 +1,4 @@
-// import { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import { Image } from "expo-image";
+import { View, StyleSheet } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
@@ -16,10 +8,16 @@ import { Screen } from "../src/components/design-kit/Screen";
 import { theme } from "../src/theme/theme";
 import { gql, useMutation } from "urql";
 import { useAuth } from "../src/context/AuthContext";
+import ImageSelectionStep from "../src/components/create/step/ImageSelection";
+import { MetadataStep } from "../src/components/create/step/Metadata";
 
-const { width } = Dimensions.get("window");
-const COLUMN_COUNT = 4;
-const IMAGE_SIZE = width / COLUMN_COUNT;
+type CreatePostStep = "image-selection" | "metadata";
+
+export interface PostFormData {
+  selectedImage: string | null;
+  selectedSize: "rectangle" | "square";
+  caption: string;
+}
 
 const POST_CREATE_MUTATION = gql`
   mutation (
@@ -54,11 +52,14 @@ export default function CreatePostScreen() {
     MediaLibrary.usePermissions();
 
   const router = useRouter();
-  const [selectedSize, setSelectedSize] = useState<"rectangle" | "square">(
-    "rectangle"
-  );
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] =
+    useState<CreatePostStep>("image-selection");
   const [photos, setPhotos] = useState<MediaLibrary.Asset[]>([]);
+  const [formData, setFormData] = useState<PostFormData>({
+    selectedImage: null,
+    selectedSize: "rectangle",
+    caption: "",
+  });
   const [resCreation, postCreation] = useMutation(POST_CREATE_MUTATION);
   const { user } = useAuth();
 
@@ -78,7 +79,10 @@ export default function CreatePostScreen() {
 
       setPhotos(assets.assets);
       if (assets.assets.length > 0) {
-        setSelectedImage(assets.assets[0].uri);
+        setFormData((prev) => ({
+          ...prev,
+          selectedImage: assets.assets[0].uri,
+        }));
       }
     }
 
@@ -89,9 +93,22 @@ export default function CreatePostScreen() {
     return <View />;
   }
 
-  const handlePost = async () => {
-    console.log({ user, selectedImage });
-    if (!user || !selectedImage) {
+  const handleNext = () => {
+    if (currentStep === "image-selection") {
+      setCurrentStep("metadata");
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep === "metadata") {
+      setCurrentStep("image-selection");
+    } else {
+      router.back();
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!user || !formData.selectedImage) {
       return;
     }
 
@@ -99,9 +116,9 @@ export default function CreatePostScreen() {
       const mockURL = `https://picsum.photos/800/800?random=${Date.now()}`;
       const response = await postCreation({
         img: mockURL,
-        size: selectedSize,
+        size: formData.selectedSize,
         authorId: user.id,
-        caption: "New drop created from mobile app",
+        caption: formData.caption || "New drop created from mobile app",
         type: "image",
       });
       if (!response.error) {
@@ -114,96 +131,69 @@ export default function CreatePostScreen() {
     }
   };
 
+  const getHeaderTitle = () => {
+    switch (currentStep) {
+      case "image-selection":
+        return "Select Image";
+      case "metadata":
+        return "Post Details";
+      default:
+        return "New Drop";
+    }
+  };
+
+  const isNextDisabled = () => {
+    if (currentStep === "image-selection") {
+      return !formData.selectedImage;
+    }
+    return false;
+  };
+
   return (
     <Screen style={{ paddingHorizontal: 0 }}>
       {/* HEADER */}
       <View style={styles.header}>
-        <Button onPress={() => router.back()} label="Cancel" variant="ghost" />
-        <Text variant="h3">New Drop</Text>
+        <Button onPress={handleBack} label="Back" variant="ghost" />
+        <Text variant="h3">{getHeaderTitle()}</Text>
         <Button
-          onPress={handlePost}
-          label="Next"
+          onPress={
+            currentStep === "image-selection" ? handleNext : handleSubmit
+          }
+          label={currentStep === "image-selection" ? "Next" : "Create"}
           variant="ghost"
           loading={resCreation.fetching}
-          disabled={!selectedImage}
+          disabled={isNextDisabled()}
         />
       </View>
 
-      <View style={{ flex: 1, gap: theme.spacing.m }}>
-        {/* PREVIEW CONTAINER */}
-        <View style={{ gap: theme.spacing.m }}>
-          <View
-            style={{
-              height: selectedSize === "rectangle" ? width / 2 : width,
-              alignItems: "center",
-              justifyContent: "center",
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              borderRadius: theme.borderRadii.m,
-            }}
-          >
-            {selectedImage ? (
-              <Image
-                source={selectedImage}
-                style={{
-                  backgroundColor: theme.colors.surface,
-                  borderRadius: theme.borderRadii.s,
-                  height: "100%",
-                  width: "100%",
-                }}
-                contentFit="cover"
-              />
-            ) : (
-              <Text>Select an image below</Text>
-            )}
-          </View>
+      <View style={{ flex: 1, paddingHorizontal: theme.spacing.m }}>
+        {currentStep === "image-selection" && (
+          <ImageSelectionStep
+            selectedImage={formData.selectedImage}
+            selectedSize={formData.selectedSize}
+            photos={photos}
+            onImageSelect={(uri) =>
+              setFormData((prev) => ({ ...prev, selectedImage: uri }))
+            }
+            onSizeSelect={(size) =>
+              setFormData((prev) => ({ ...prev, selectedSize: size }))
+            }
+            onNext={handleNext}
+          />
+        )}
 
-          {/* SIZE SELECTOR */}
-          <View
-            style={{
-              flexDirection: "row",
-              gap: theme.spacing.m,
-            }}
-          >
-            {["rectangle", "square"].map((size) => (
-              <Button
-                key={size}
-                onPress={() => setSelectedSize(size as "rectangle" | "square")}
-                label={size.charAt(0).toUpperCase() + size.slice(1)}
-                variant={selectedSize === size ? "primary" : "secondary"}
-              />
-            ))}
-          </View>
-        </View>
-
-        {/* IMAGES GRID */}
-        <FlatList
-          data={photos}
-          style={{ borderRadius: theme.borderRadii.m }}
-          keyExtractor={(item) => item.uri}
-          numColumns={COLUMN_COUNT}
-          scrollEnabled={true}
-          renderItem={({ item }: { item: MediaLibrary.Asset }) => (
-            <TouchableOpacity
-              onPress={() => setSelectedImage(item.uri)}
-              activeOpacity={0.8}
-            >
-              <Image
-                source={item.uri}
-                style={{
-                  width: IMAGE_SIZE,
-                  height: IMAGE_SIZE,
-                  opacity: selectedImage === item.uri ? 0.5 : 1,
-                  borderColor:
-                    selectedImage === item.uri
-                      ? theme.colors.primary
-                      : "transparent",
-                }}
-                contentFit="cover"
-              />
-            </TouchableOpacity>
-          )}
-        />
+        {currentStep === "metadata" && (
+          <MetadataStep
+            selectedImage={formData.selectedImage}
+            selectedSize={formData.selectedSize}
+            caption={formData.caption}
+            onCaptionChange={(caption) =>
+              setFormData((prev) => ({ ...prev, caption }))
+            }
+            onSubmit={handleSubmit}
+            isLoading={resCreation.fetching}
+          />
+        )}
       </View>
     </Screen>
   );
@@ -220,8 +210,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.border,
     marginBottom: theme.spacing.m,
-  },
-  selectedImage: {
-    borderRadius: 8,
   },
 });
