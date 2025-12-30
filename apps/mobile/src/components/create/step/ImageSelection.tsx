@@ -1,4 +1,10 @@
-import { FlatList, TouchableOpacity, View, Dimensions } from "react-native";
+import {
+  FlatList,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  StyleSheet,
+} from "react-native";
 import { Image } from "expo-image";
 import * as MediaLibrary from "expo-media-library";
 import { theme } from "../../../../src/theme/theme";
@@ -7,7 +13,7 @@ import { Text } from "../../../../src/components/design-kit/Text";
 
 const { width } = Dimensions.get("window");
 const COLUMN_COUNT = 4;
-const IMAGE_SIZE = width / COLUMN_COUNT;
+const IMAGE_SIZE = (width - theme.spacing.m) / COLUMN_COUNT;
 
 interface Props {
   selectedImage: string | null;
@@ -31,24 +37,15 @@ export default function ImageSelectionStep({
       {/* PREVIEW CONTAINER */}
       <View style={{ gap: theme.spacing.m }}>
         <View
-          style={{
-            height: selectedSize === "rectangle" ? width / 2 : width,
-            alignItems: "center",
-            justifyContent: "center",
-            borderWidth: 1,
-            borderColor: theme.colors.border,
-            borderRadius: theme.borderRadii.m,
-          }}
+          style={[
+            styles.previewContainer,
+            { height: selectedSize === "rectangle" ? width / 2 : width },
+          ]}
         >
           {selectedImage ? (
             <Image
               source={selectedImage}
-              style={{
-                backgroundColor: theme.colors.surface,
-                borderRadius: theme.borderRadii.s,
-                height: "100%",
-                width: "100%",
-              }}
+              style={styles.previewImg}
               contentFit="cover"
             />
           ) : (
@@ -57,12 +54,7 @@ export default function ImageSelectionStep({
         </View>
 
         {/* SIZE SELECTOR */}
-        <View
-          style={{
-            flexDirection: "row",
-            gap: theme.spacing.m,
-          }}
-        >
+        <View style={styles.sizeSelector}>
           {["rectangle", "square"].map((size) => (
             <Button
               key={size}
@@ -92,12 +84,7 @@ export default function ImageSelectionStep({
                 width: IMAGE_SIZE,
                 height: IMAGE_SIZE,
                 opacity: selectedImage === item.uri ? 0.5 : 1,
-                borderColor:
-                  selectedImage === item.uri
-                    ? theme.colors.primary
-                    : "transparent",
               }}
-              contentFit="cover"
             />
           </TouchableOpacity>
         )}
@@ -105,3 +92,23 @@ export default function ImageSelectionStep({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  previewContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.borderRadii.m,
+  },
+  previewImg: {
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.borderRadii.s,
+    height: "100%",
+    width: "100%",
+  },
+  sizeSelector: {
+    flexDirection: "row",
+    gap: theme.spacing.m,
+  },
+});

@@ -1,15 +1,12 @@
-import { View, StyleSheet } from "react-native";
-import * as MediaLibrary from "expo-media-library";
+import { View } from "react-native";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-import { Text } from "../src/components/design-kit/Text";
-import { Button } from "../src/components/design-kit/Button";
 import { Screen } from "../src/components/design-kit/Screen";
-import { theme } from "../src/theme/theme";
-import { gql, useMutation } from "urql";
-import { useAuth } from "../src/context/AuthContext";
 import ImageSelectionStep from "../src/components/create/step/ImageSelection";
 import { MetadataStep } from "../src/components/create/step/Metadata";
+import { useCreatePost } from "../src/hooks/useCreatePost";
+import { useMediaLibrary } from "../src/hooks/useMediaLibrary";
+import Header from "../src/components/create/Header";
 
 type CreatePostStep = "image-selection" | "metadata";
 
@@ -19,79 +16,24 @@ export interface PostFormData {
   caption: string;
 }
 
-const POST_CREATE_MUTATION = gql`
-  mutation (
-    $img: String!
-    $caption: String!
-    $size: String!
-    $type: String!
-    $authorId: String!
-  ) {
-    createPost(
-      img: $img
-      caption: $caption
-      size: $size
-      type: $type
-      authorId: $authorId
-    ) {
-      id
-      caption
-      img
-      size
-      type
-      author {
-        id
-        username
-      }
-    }
-  }
-`;
-
 export default function CreatePostScreen() {
-  const [permissionResponse, requestPerimission] =
-    MediaLibrary.usePermissions();
-
   const router = useRouter();
+  const { asyncCreatePost, isLoading: isCreatingPost } = useCreatePost();
+  const { photos } = useMediaLibrary();
+
   const [currentStep, setCurrentStep] =
     useState<CreatePostStep>("image-selection");
-  const [photos, setPhotos] = useState<MediaLibrary.Asset[]>([]);
   const [formData, setFormData] = useState<PostFormData>({
-    selectedImage: null,
+    selectedImage: photos.length > 0 ? photos[0].uri : null,
     selectedSize: "rectangle",
     caption: "",
   });
-  const [resCreation, postCreation] = useMutation(POST_CREATE_MUTATION);
-  const { user } = useAuth();
 
   useEffect(() => {
-    async function init() {
-      if (permissionResponse?.status !== "granted") {
-        const { status } = await requestPerimission();
-        if (status !== "granted") {
-          return;
-        }
-      }
-
-      const assets = await MediaLibrary.getAssetsAsync({
-        mediaType: ["photo"],
-        sortBy: ["creationTime"],
-      });
-
-      setPhotos(assets.assets);
-      if (assets.assets.length > 0) {
-        setFormData((prev) => ({
-          ...prev,
-          selectedImage: assets.assets[0].uri,
-        }));
-      }
+    if (photos.length > 0 && !formData.selectedImage) {
+      setFormData((prev) => ({ ...prev, selectedImage: photos[0].uri }));
     }
-
-    init();
-  }, [permissionResponse, requestPerimission]);
-
-  if (!permissionResponse) {
-    return <View />;
-  }
+  }, [formData.selectedImage, photos]);
 
   const handleNext = () => {
     if (currentStep === "image-selection") {
@@ -108,37 +50,13 @@ export default function CreatePostScreen() {
   };
 
   const handleSubmit = async () => {
-    if (!user || !formData.selectedImage) {
-      return;
-    }
-
-    try {
-      const mockURL = `https://picsum.photos/800/800?random=${Date.now()}`;
-      const response = await postCreation({
-        img: mockURL,
-        size: formData.selectedSize,
-        authorId: user.id,
-        caption: formData.caption || "New drop created from mobile app",
-        type: "image",
-      });
-      if (!response.error) {
-        router.back();
-      } else {
-        alert("Error creating post: " + response.error.message);
-      }
-    } catch (error) {
-      alert("Error creating post: " + error);
-    }
-  };
-
-  const getHeaderTitle = () => {
-    switch (currentStep) {
-      case "image-selection":
-        return "Select Image";
-      case "metadata":
-        return "Post Details";
-      default:
-        return "New Drop";
+    const success = await asyncCreatePost({
+      img: formData.selectedImage!,
+      caption: formData.caption,
+      size: formData.selectedSize,
+    });
+    if (success) {
+      router.back();
     }
   };
 
@@ -152,21 +70,16 @@ export default function CreatePostScreen() {
   return (
     <Screen style={{ paddingHorizontal: 0 }}>
       {/* HEADER */}
-      <View style={styles.header}>
-        <Button onPress={handleBack} label="Back" variant="ghost" />
-        <Text variant="h3">{getHeaderTitle()}</Text>
-        <Button
-          onPress={
-            currentStep === "image-selection" ? handleNext : handleSubmit
-          }
-          label={currentStep === "image-selection" ? "Next" : "Create"}
-          variant="ghost"
-          loading={resCreation.fetching}
-          disabled={isNextDisabled()}
-        />
-      </View>
+      <Header
+        currentStep={currentStep}
+        onBack={handleBack}
+        onNext={handleNext}
+        onSubmit={handleSubmit}
+        isNextDisabled={isNextDisabled()}
+        isLoading={isCreatingPost}
+      />
 
-      <View style={{ flex: 1, paddingHorizontal: theme.spacing.m }}>
+      <View style={{ flex: 1 }}>
         {currentStep === "image-selection" && (
           <ImageSelectionStep
             selectedImage={formData.selectedImage}
@@ -191,24 +104,10 @@ export default function CreatePostScreen() {
               setFormData((prev) => ({ ...prev, caption }))
             }
             onSubmit={handleSubmit}
-            isLoading={resCreation.fetching}
+            isLoading={isCreatingPost}
           />
         )}
       </View>
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: theme.spacing.m,
-    paddingVertical: theme.spacing.s,
-    backgroundColor: theme.colors.background,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colors.border,
-    marginBottom: theme.spacing.m,
-  },
-});

@@ -49,7 +49,7 @@ export const Button = ({
   const isIconOnly = icon && !label;
 
   const getBackgroundColor = () => {
-    if (disabled) return theme.colors.surface;
+    if (disabled && variant !== "ghost") return theme.colors.surface;
     if (variant === "primary") return theme.colors.primary;
     if (variant === "secondary") return theme.colors.surface;
     return "transparent";

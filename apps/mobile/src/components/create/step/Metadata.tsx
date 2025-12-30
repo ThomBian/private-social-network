@@ -2,7 +2,6 @@
 
 import { View, TextInput, Dimensions, StyleSheet } from "react-native";
 import { theme } from "../../../theme/theme";
-import { Text } from "../../../components/design-kit/Text";
 import { Image } from "expo-image";
 
 interface Props {
@@ -58,9 +57,6 @@ export function MetadataStep({
             multiline
             maxLength={500}
           />
-          <Text variant="caption" style={{ alignSelf: "flex-end" }}>
-            {caption.length}/500
-          </Text>
         </View>
       </View>
     </View>
@@ -73,9 +69,6 @@ const styles = StyleSheet.create({
     gap: theme.spacing.m,
   },
   captionInput: {
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadii.m,
     padding: theme.spacing.m,
     color: theme.colors.text,
     fontSize: 16,
