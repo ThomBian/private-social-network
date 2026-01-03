@@ -1,10 +1,19 @@
-import { Args, ID, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { User } from './user.model';
 import { UsersService } from './users.service';
+import { UseGuards } from '@nestjs/common';
+import { GqlJwtAuthGuard } from '../auth/jwt.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
+import { Parent } from '@nestjs/graphql';
+import { Connection } from '../connection/connection.model';
+import { ConnectionService } from '../connection/connection.service';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly connectionService: ConnectionService,
+  ) {}
 
   @Query(() => [User], { name: 'users' })
   async getUsers(): Promise<User[]> {
@@ -23,5 +32,18 @@ export class UsersResolver {
     @Args('username', { type: () => String }) username: string,
   ): Promise<User | null> {
     return this.usersService.findByUsername(username) as Promise<User | null>;
+  }
+
+  @UseGuards(GqlJwtAuthGuard)
+  @ResolveField(() => Connection, { nullable: true, name: 'connectionToMe' })
+  async connectionToMe(
+    @CurrentUser() viewer: User,
+    @Parent() user: User,
+  ): Promise<Connection | null> {
+    if (!viewer || user.id === viewer.id) {
+      return null;
+    }
+
+    return await this.connectionService.getConnection(user.id, viewer.id);
   }
 }

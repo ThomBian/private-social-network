@@ -184,6 +184,8 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   posts?: Prisma.PostListRelationFilter
+  myConnections?: Prisma.ConnectionListRelationFilter
+  connectedToMe?: Prisma.ConnectionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -194,6 +196,8 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   profile?: Prisma.ProfileOrderByWithRelationInput
   posts?: Prisma.PostOrderByRelationAggregateInput
+  myConnections?: Prisma.ConnectionOrderByRelationAggregateInput
+  connectedToMe?: Prisma.ConnectionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -207,6 +211,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
   posts?: Prisma.PostListRelationFilter
+  myConnections?: Prisma.ConnectionListRelationFilter
+  connectedToMe?: Prisma.ConnectionListRelationFilter
 }, "id" | "username" | "email" | "phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
@@ -239,6 +245,8 @@ export type UserCreateInput = {
   createdAt?: Date | string
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  myConnections?: Prisma.ConnectionCreateNestedManyWithoutOwnerInput
+  connectedToMe?: Prisma.ConnectionCreateNestedManyWithoutViewerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -249,6 +257,8 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  myConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutOwnerInput
+  connectedToMe?: Prisma.ConnectionUncheckedCreateNestedManyWithoutViewerInput
 }
 
 export type UserUpdateInput = {
@@ -259,6 +269,8 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  myConnections?: Prisma.ConnectionUpdateManyWithoutOwnerNestedInput
+  connectedToMe?: Prisma.ConnectionUpdateManyWithoutViewerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -269,6 +281,8 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  myConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutOwnerNestedInput
+  connectedToMe?: Prisma.ConnectionUncheckedUpdateManyWithoutViewerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -364,6 +378,34 @@ export type UserUpdateOneRequiredWithoutPostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostsInput, Prisma.UserUpdateWithoutPostsInput>, Prisma.UserUncheckedUpdateWithoutPostsInput>
 }
 
+export type UserCreateNestedOneWithoutMyConnectionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMyConnectionsInput, Prisma.UserUncheckedCreateWithoutMyConnectionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMyConnectionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutConnectedToMeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutConnectedToMeInput, Prisma.UserUncheckedCreateWithoutConnectedToMeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConnectedToMeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMyConnectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMyConnectionsInput, Prisma.UserUncheckedCreateWithoutMyConnectionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMyConnectionsInput
+  upsert?: Prisma.UserUpsertWithoutMyConnectionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMyConnectionsInput, Prisma.UserUpdateWithoutMyConnectionsInput>, Prisma.UserUncheckedUpdateWithoutMyConnectionsInput>
+}
+
+export type UserUpdateOneRequiredWithoutConnectedToMeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutConnectedToMeInput, Prisma.UserUncheckedCreateWithoutConnectedToMeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutConnectedToMeInput
+  upsert?: Prisma.UserUpsertWithoutConnectedToMeInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutConnectedToMeInput, Prisma.UserUpdateWithoutConnectedToMeInput>, Prisma.UserUncheckedUpdateWithoutConnectedToMeInput>
+}
+
 export type UserCreateWithoutProfileInput = {
   id?: string
   username?: string | null
@@ -371,6 +413,8 @@ export type UserCreateWithoutProfileInput = {
   phoneNumber: string
   createdAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  myConnections?: Prisma.ConnectionCreateNestedManyWithoutOwnerInput
+  connectedToMe?: Prisma.ConnectionCreateNestedManyWithoutViewerInput
 }
 
 export type UserUncheckedCreateWithoutProfileInput = {
@@ -380,6 +424,8 @@ export type UserUncheckedCreateWithoutProfileInput = {
   phoneNumber: string
   createdAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  myConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutOwnerInput
+  connectedToMe?: Prisma.ConnectionUncheckedCreateNestedManyWithoutViewerInput
 }
 
 export type UserCreateOrConnectWithoutProfileInput = {
@@ -405,6 +451,8 @@ export type UserUpdateWithoutProfileInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  myConnections?: Prisma.ConnectionUpdateManyWithoutOwnerNestedInput
+  connectedToMe?: Prisma.ConnectionUpdateManyWithoutViewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfileInput = {
@@ -414,6 +462,8 @@ export type UserUncheckedUpdateWithoutProfileInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  myConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutOwnerNestedInput
+  connectedToMe?: Prisma.ConnectionUncheckedUpdateManyWithoutViewerNestedInput
 }
 
 export type UserCreateWithoutPostsInput = {
@@ -423,6 +473,8 @@ export type UserCreateWithoutPostsInput = {
   phoneNumber: string
   createdAt?: Date | string
   profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  myConnections?: Prisma.ConnectionCreateNestedManyWithoutOwnerInput
+  connectedToMe?: Prisma.ConnectionCreateNestedManyWithoutViewerInput
 }
 
 export type UserUncheckedCreateWithoutPostsInput = {
@@ -432,6 +484,8 @@ export type UserUncheckedCreateWithoutPostsInput = {
   phoneNumber: string
   createdAt?: Date | string
   profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  myConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutOwnerInput
+  connectedToMe?: Prisma.ConnectionUncheckedCreateNestedManyWithoutViewerInput
 }
 
 export type UserCreateOrConnectWithoutPostsInput = {
@@ -457,6 +511,8 @@ export type UserUpdateWithoutPostsInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  myConnections?: Prisma.ConnectionUpdateManyWithoutOwnerNestedInput
+  connectedToMe?: Prisma.ConnectionUpdateManyWithoutViewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostsInput = {
@@ -466,6 +522,128 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  myConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutOwnerNestedInput
+  connectedToMe?: Prisma.ConnectionUncheckedUpdateManyWithoutViewerNestedInput
+}
+
+export type UserCreateWithoutMyConnectionsInput = {
+  id?: string
+  username?: string | null
+  email?: string | null
+  phoneNumber: string
+  createdAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  connectedToMe?: Prisma.ConnectionCreateNestedManyWithoutViewerInput
+}
+
+export type UserUncheckedCreateWithoutMyConnectionsInput = {
+  id?: string
+  username?: string | null
+  email?: string | null
+  phoneNumber: string
+  createdAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  connectedToMe?: Prisma.ConnectionUncheckedCreateNestedManyWithoutViewerInput
+}
+
+export type UserCreateOrConnectWithoutMyConnectionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMyConnectionsInput, Prisma.UserUncheckedCreateWithoutMyConnectionsInput>
+}
+
+export type UserCreateWithoutConnectedToMeInput = {
+  id?: string
+  username?: string | null
+  email?: string | null
+  phoneNumber: string
+  createdAt?: Date | string
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  myConnections?: Prisma.ConnectionCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutConnectedToMeInput = {
+  id?: string
+  username?: string | null
+  email?: string | null
+  phoneNumber: string
+  createdAt?: Date | string
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  myConnections?: Prisma.ConnectionUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutConnectedToMeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutConnectedToMeInput, Prisma.UserUncheckedCreateWithoutConnectedToMeInput>
+}
+
+export type UserUpsertWithoutMyConnectionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMyConnectionsInput, Prisma.UserUncheckedUpdateWithoutMyConnectionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMyConnectionsInput, Prisma.UserUncheckedCreateWithoutMyConnectionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMyConnectionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMyConnectionsInput, Prisma.UserUncheckedUpdateWithoutMyConnectionsInput>
+}
+
+export type UserUpdateWithoutMyConnectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  connectedToMe?: Prisma.ConnectionUpdateManyWithoutViewerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMyConnectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  connectedToMe?: Prisma.ConnectionUncheckedUpdateManyWithoutViewerNestedInput
+}
+
+export type UserUpsertWithoutConnectedToMeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutConnectedToMeInput, Prisma.UserUncheckedUpdateWithoutConnectedToMeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutConnectedToMeInput, Prisma.UserUncheckedCreateWithoutConnectedToMeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutConnectedToMeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutConnectedToMeInput, Prisma.UserUncheckedUpdateWithoutConnectedToMeInput>
+}
+
+export type UserUpdateWithoutConnectedToMeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  myConnections?: Prisma.ConnectionUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutConnectedToMeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  myConnections?: Prisma.ConnectionUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 
@@ -475,10 +653,14 @@ export type UserUncheckedUpdateWithoutPostsInput = {
 
 export type UserCountOutputType = {
   posts: number
+  myConnections: number
+  connectedToMe: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | UserCountOutputTypeCountPostsArgs
+  myConnections?: boolean | UserCountOutputTypeCountMyConnectionsArgs
+  connectedToMe?: boolean | UserCountOutputTypeCountConnectedToMeArgs
 }
 
 /**
@@ -498,6 +680,20 @@ export type UserCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.PostWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMyConnectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConnectionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountConnectedToMeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConnectionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -507,6 +703,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  myConnections?: boolean | Prisma.User$myConnectionsArgs<ExtArgs>
+  connectedToMe?: boolean | Prisma.User$connectedToMeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -538,6 +736,8 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  myConnections?: boolean | Prisma.User$myConnectionsArgs<ExtArgs>
+  connectedToMe?: boolean | Prisma.User$connectedToMeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -548,6 +748,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     profile: Prisma.$ProfilePayload<ExtArgs> | null
     posts: Prisma.$PostPayload<ExtArgs>[]
+    myConnections: Prisma.$ConnectionPayload<ExtArgs>[]
+    connectedToMe: Prisma.$ConnectionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -951,6 +1153,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   posts<T extends Prisma.User$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  myConnections<T extends Prisma.User$myConnectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$myConnectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  connectedToMe<T extends Prisma.User$connectedToMeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$connectedToMeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1413,6 +1617,54 @@ export type User$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * User.myConnections
+ */
+export type User$myConnectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Connection
+   */
+  select?: Prisma.ConnectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Connection
+   */
+  omit?: Prisma.ConnectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConnectionInclude<ExtArgs> | null
+  where?: Prisma.ConnectionWhereInput
+  orderBy?: Prisma.ConnectionOrderByWithRelationInput | Prisma.ConnectionOrderByWithRelationInput[]
+  cursor?: Prisma.ConnectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConnectionScalarFieldEnum | Prisma.ConnectionScalarFieldEnum[]
+}
+
+/**
+ * User.connectedToMe
+ */
+export type User$connectedToMeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Connection
+   */
+  select?: Prisma.ConnectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Connection
+   */
+  omit?: Prisma.ConnectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConnectionInclude<ExtArgs> | null
+  where?: Prisma.ConnectionWhereInput
+  orderBy?: Prisma.ConnectionOrderByWithRelationInput | Prisma.ConnectionOrderByWithRelationInput[]
+  cursor?: Prisma.ConnectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConnectionScalarFieldEnum | Prisma.ConnectionScalarFieldEnum[]
 }
 
 /**

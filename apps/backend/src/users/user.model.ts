@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Post } from '../posts/post.model';
 import { Profile } from '../profiles/profile.model';
+import { Connection } from '../connection/connection.model';
 
 @ObjectType()
 export class User {
@@ -24,4 +25,7 @@ export class User {
 
   @Field(() => [Post], { nullable: true })
   posts?: Post[];
+
+  @Field({ nullable: true })
+  connectionToMe?: Connection;
 }

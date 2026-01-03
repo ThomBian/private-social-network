@@ -1,27 +1,27 @@
 // app/_layout.js
 import { Stack, useRouter, useSegments } from "expo-router";
-import { ActivityIndicator, Platform, View } from "react-native";
-import { cacheExchange, Client, fetchExchange, Provider } from "urql";
+import { ActivityIndicator, View } from "react-native";
+import { Client, Provider } from "urql";
 import { AuthProvider, useAuth } from "../src/context/AuthContext";
-import { useEffect } from "react";
-
-const API_URL = Platform.select({
-  ios: "http://192.168.68.105:3000/graphql",
-  android: "http://10.0.2.2:3000/graphql",
-  default: "http://localhost:3000/graphql",
-});
-
-console.log("📱 Connecting to Backend at:", API_URL);
-
-const client = new Client({
-  url: API_URL!,
-  exchanges: [cacheExchange, fetchExchange],
-});
+import { useEffect, useState } from "react";
+import createUrqlClient from "../src/utils/urql-client";
 
 function RootLayoutNav() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, token } = useAuth();
+  const [client, setClient] = useState<Client | null>(null);
+  const [clientLoading, setClientLoading] = useState(true);
   const segments = useSegments();
   const router = useRouter();
+
+  // Initialize urql client with auth token
+  useEffect(() => {
+    const initClient = async () => {
+      const urqlClient = await createUrqlClient(token);
+      setClient(urqlClient);
+      setClientLoading(false);
+    };
+    initClient();
+  }, [token]);
 
   useEffect(() => {
     if (isLoading) {
@@ -37,7 +37,7 @@ function RootLayoutNav() {
     }
   }, [user, isLoading, segments, router]);
 
-  if (isLoading) {
+  if (isLoading || clientLoading || !client) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
@@ -46,21 +46,21 @@ function RootLayoutNav() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="login" options={{ animation: "fade" }} />
-      <Stack.Screen name="index" />
-      <Stack.Screen name="[username]" />
-      <Stack.Screen name="create" options={{ title: "Nouveau postr" }} />
-    </Stack>
+    <Provider value={client}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="login" options={{ animation: "fade" }} />
+        <Stack.Screen name="index" />
+        <Stack.Screen name="[username]" />
+        <Stack.Screen name="create" options={{ title: "Nouveau postr" }} />
+      </Stack>
+    </Provider>
   );
 }
 
 export default function Layout() {
   return (
-    <Provider value={client}>
-      <AuthProvider>
-        <RootLayoutNav />
-      </AuthProvider>
-    </Provider>
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }

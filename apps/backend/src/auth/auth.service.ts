@@ -1,15 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import Redis from 'ioredis';
 import { User } from '../users/user.model';
 import { PrismaService } from '../prisma/prisma.service';
+import { UsersService } from '../users/users.service';
 
 const EXPIRATION_TIME_SECONDS = 5 * 60; // 5 minutes
+
+export interface JwtPayload {
+  sub: string;
+  id: string;
+  username: string;
+}
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prismaService: PrismaService,
     @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async requestPhoneCode(phoneNumber: string): Promise<number> {
@@ -29,7 +39,7 @@ export class AuthService {
   async loginWithPhoneCode(
     phoneNumber: string,
     code: number,
-  ): Promise<User | null> {
+  ): Promise<{ user: User; token: string } | null> {
     const storedCode = await this.redisClient.get(`opt-phone-${phoneNumber}`);
 
     if (!storedCode) {
@@ -44,19 +54,39 @@ export class AuthService {
 
     await this.redisClient.del(`opt-phone-${phoneNumber}`);
 
-    let user = await this.prismaService.user.findUnique({
-      where: { phoneNumber },
-    });
+    const user = (await this.usersService.findOrCreateUserByPhoneNumber(
+      phoneNumber,
+    )) as User;
 
-    if (!user) {
-      user = await this.prismaService.user.create({
-        data: {
-          phoneNumber,
-          username: `user-${phoneNumber.slice(-4)}`,
-        },
-      });
+    const payload: JwtPayload = {
+      sub: user.id,
+      id: user.id,
+      username: user.username,
+    };
+
+    return {
+      user: user,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      token: this.jwtService.sign(payload),
+    };
+  }
+
+  /**
+   * Verify and decode a JWT token
+   */
+  verifyToken(
+    token: string,
+  ): { sub: string; id: string; username: string } | null {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      const decoded = this.jwtService.verify(token) as unknown as {
+        sub: string;
+        id: string;
+        username: string;
+      };
+      return decoded;
+    } catch {
+      return null;
     }
-
-    return user as User;
   }
 }

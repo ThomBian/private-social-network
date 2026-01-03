@@ -15,3 +15,30 @@ export const PostSize = {
 } as const
 
 export type PostSize = (typeof PostSize)[keyof typeof PostSize]
+
+
+export const PostAudience = {
+  FAMILY: 'FAMILY',
+  FRIENDS: 'FRIENDS',
+  ALL: 'ALL'
+} as const
+
+export type PostAudience = (typeof PostAudience)[keyof typeof PostAudience]
+
+
+export const RelationGroup = {
+  FAMILY: 'FAMILY',
+  FRIENDS: 'FRIENDS',
+  OTHERS: 'OTHERS'
+} as const
+
+export type RelationGroup = (typeof RelationGroup)[keyof typeof RelationGroup]
+
+
+export const ConnectionStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  BLOCKED: 'BLOCKED'
+} as const
+
+export type ConnectionStatus = (typeof ConnectionStatus)[keyof typeof ConnectionStatus]

@@ -23,7 +23,9 @@ const feedQuery = `
 `;
 
 export default function Feed() {
-  const [{ data, fetching, error }] = useQuery({ query: feedQuery });
+  const [{ data, fetching, error }] = useQuery({
+    query: feedQuery,
+  });
 
   const posts = useMemo(() => {
     if (fetching || error || !data) {

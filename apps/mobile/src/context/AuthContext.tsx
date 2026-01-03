@@ -5,24 +5,30 @@ import { useRouter } from "expo-router";
 
 interface AuthContextType {
   user: User | null;
+  token: string | null;
   isLoading: boolean;
-  signIn: (user: User) => Promise<void>;
+  signIn: (user: User, token: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+const AUTH_STORAGE_KEY = "user_session";
+export const AUTH_TOKEN_KEY = "auth_token";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
-    async function loadUser() {
+    async function loadSession() {
       try {
-        const storedUser = await SecureStorage.getItemAsync("user_session");
-        if (storedUser) {
+        const storedUser = await SecureStorage.getItemAsync(AUTH_STORAGE_KEY);
+        const storedToken = await SecureStorage.getItemAsync(AUTH_TOKEN_KEY);
+        if (storedUser && storedToken) {
           setUser(JSON.parse(storedUser) as User);
+          setToken(storedToken);
         }
       } catch (error) {
         console.error("Failed to load user session:", error);
@@ -30,25 +36,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(false);
       }
     }
-    loadUser();
+    loadSession();
   }, []);
 
-  const signIn = async (newUser: User) => {
+  const signIn = async (newUser: User, newToken: string) => {
     setUser(newUser);
-    await SecureStorage.setItemAsync("user_session", JSON.stringify(newUser));
+    setToken(newToken);
+    await SecureStorage.setItemAsync(AUTH_STORAGE_KEY, JSON.stringify(newUser));
+    await SecureStorage.setItemAsync(AUTH_TOKEN_KEY, newToken);
     router.replace("/");
   };
 
   const signOut = async () => {
     setUser(null);
-    await SecureStorage.deleteItemAsync("user_session");
+    setToken(null);
+    await SecureStorage.deleteItemAsync(AUTH_STORAGE_KEY);
+    await SecureStorage.deleteItemAsync(AUTH_TOKEN_KEY);
     router.replace("/login");
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, isLoading, signIn: signIn, signOut: signOut }}
-    >
+    <AuthContext.Provider value={{ user, token, isLoading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,20 +2,8 @@ import { gql, useMutation } from "urql";
 import { useAuth } from "../context/AuthContext";
 
 const POST_CREATE_MUTATION = gql`
-  mutation (
-    $img: String!
-    $caption: String!
-    $size: String!
-    $type: String!
-    $authorId: String!
-  ) {
-    createPost(
-      img: $img
-      caption: $caption
-      size: $size
-      type: $type
-      authorId: $authorId
-    ) {
+  mutation ($img: String!, $caption: String!, $size: String!, $type: String!) {
+    createPost(img: $img, caption: $caption, size: $size, type: $type) {
       id
       caption
       img
@@ -50,7 +38,6 @@ export function useCreatePost() {
       const response = await createPost({
         img: mockURL,
         size,
-        authorId: user.id,
         caption: caption || "New drop created from mobile app",
         type: "image",
       });

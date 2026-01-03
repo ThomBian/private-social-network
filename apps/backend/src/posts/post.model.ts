@@ -1,5 +1,14 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { User } from '../users/user.model';
+import { PostAudience, PostSize } from '../../generated/prisma/enums';
+
+registerEnumType(PostAudience, {
+  name: 'PostAudience',
+});
+
+registerEnumType(PostSize, {
+  name: 'PostSize',
+});
 
 @ObjectType()
 export class Post {
@@ -12,8 +21,8 @@ export class Post {
   @Field()
   post_date: Date;
 
-  @Field()
-  size: 'rectangle' | 'square';
+  @Field(() => PostSize)
+  size: PostSize;
 
   @Field()
   type: string;
@@ -26,4 +35,7 @@ export class Post {
 
   @Field(() => ID)
   authorId: string;
+
+  @Field(() => PostAudience)
+  audience: PostAudience;
 }

@@ -53,7 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Profile: 'Profile',
-  Post: 'Post'
+  Post: 'Post',
+  Connection: 'Connection'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -99,10 +100,21 @@ export const PostScalarFieldEnum = {
   img: 'img',
   size: 'size',
   type: 'type',
-  authorId: 'authorId'
+  authorId: 'authorId',
+  audience: 'audience'
 } as const
 
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+
+
+export const ConnectionScalarFieldEnum = {
+  ownerId: 'ownerId',
+  viewerId: 'viewerId',
+  group: 'group',
+  status: 'status'
+} as const
+
+export type ConnectionScalarFieldEnum = (typeof ConnectionScalarFieldEnum)[keyof typeof ConnectionScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -117,6 +117,13 @@ export type EnumPostSizeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPostSizeFilter<$PrismaModel> | $Enums.PostSize
 }
 
+export type EnumPostAudienceFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostAudience | Prisma.EnumPostAudienceFieldRefInput<$PrismaModel>
+  in?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostAudienceFilter<$PrismaModel> | $Enums.PostAudience
+}
+
 export type EnumPostSizeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.PostSize | Prisma.EnumPostSizeFieldRefInput<$PrismaModel>
   in?: $Enums.PostSize[] | Prisma.ListEnumPostSizeFieldRefInput<$PrismaModel>
@@ -125,6 +132,50 @@ export type EnumPostSizeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPostSizeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPostSizeFilter<$PrismaModel>
+}
+
+export type EnumPostAudienceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostAudience | Prisma.EnumPostAudienceFieldRefInput<$PrismaModel>
+  in?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostAudienceWithAggregatesFilter<$PrismaModel> | $Enums.PostAudience
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPostAudienceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPostAudienceFilter<$PrismaModel>
+}
+
+export type EnumRelationGroupFilter<$PrismaModel = never> = {
+  equals?: $Enums.RelationGroup | Prisma.EnumRelationGroupFieldRefInput<$PrismaModel>
+  in?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRelationGroupFilter<$PrismaModel> | $Enums.RelationGroup
+}
+
+export type EnumConnectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel> | $Enums.ConnectionStatus
+}
+
+export type EnumRelationGroupWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RelationGroup | Prisma.EnumRelationGroupFieldRefInput<$PrismaModel>
+  in?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRelationGroupWithAggregatesFilter<$PrismaModel> | $Enums.RelationGroup
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRelationGroupFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRelationGroupFilter<$PrismaModel>
+}
+
+export type EnumConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ConnectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -243,6 +294,13 @@ export type NestedEnumPostSizeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPostSizeFilter<$PrismaModel> | $Enums.PostSize
 }
 
+export type NestedEnumPostAudienceFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostAudience | Prisma.EnumPostAudienceFieldRefInput<$PrismaModel>
+  in?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostAudienceFilter<$PrismaModel> | $Enums.PostAudience
+}
+
 export type NestedEnumPostSizeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.PostSize | Prisma.EnumPostSizeFieldRefInput<$PrismaModel>
   in?: $Enums.PostSize[] | Prisma.ListEnumPostSizeFieldRefInput<$PrismaModel>
@@ -251,6 +309,50 @@ export type NestedEnumPostSizeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPostSizeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPostSizeFilter<$PrismaModel>
+}
+
+export type NestedEnumPostAudienceWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PostAudience | Prisma.EnumPostAudienceFieldRefInput<$PrismaModel>
+  in?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PostAudience[] | Prisma.ListEnumPostAudienceFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPostAudienceWithAggregatesFilter<$PrismaModel> | $Enums.PostAudience
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPostAudienceFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPostAudienceFilter<$PrismaModel>
+}
+
+export type NestedEnumRelationGroupFilter<$PrismaModel = never> = {
+  equals?: $Enums.RelationGroup | Prisma.EnumRelationGroupFieldRefInput<$PrismaModel>
+  in?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRelationGroupFilter<$PrismaModel> | $Enums.RelationGroup
+}
+
+export type NestedEnumConnectionStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel> | $Enums.ConnectionStatus
+}
+
+export type NestedEnumRelationGroupWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RelationGroup | Prisma.EnumRelationGroupFieldRefInput<$PrismaModel>
+  in?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  notIn?: $Enums.RelationGroup[] | Prisma.ListEnumRelationGroupFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumRelationGroupWithAggregatesFilter<$PrismaModel> | $Enums.RelationGroup
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRelationGroupFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRelationGroupFilter<$PrismaModel>
+}
+
+export type NestedEnumConnectionStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ConnectionStatus | Prisma.EnumConnectionStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ConnectionStatus[] | Prisma.ListEnumConnectionStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumConnectionStatusWithAggregatesFilter<$PrismaModel> | $Enums.ConnectionStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumConnectionStatusFilter<$PrismaModel>
 }
 
 

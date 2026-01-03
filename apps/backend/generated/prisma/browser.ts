@@ -32,3 +32,8 @@ export type Profile = Prisma.ProfileModel
  * 
  */
 export type Post = Prisma.PostModel
+/**
+ * Model Connection
+ * 
+ */
+export type Connection = Prisma.ConnectionModel

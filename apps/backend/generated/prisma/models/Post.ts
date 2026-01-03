@@ -32,6 +32,7 @@ export type PostMinAggregateOutputType = {
   size: $Enums.PostSize | null
   type: string | null
   authorId: string | null
+  audience: $Enums.PostAudience | null
 }
 
 export type PostMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type PostMaxAggregateOutputType = {
   size: $Enums.PostSize | null
   type: string | null
   authorId: string | null
+  audience: $Enums.PostAudience | null
 }
 
 export type PostCountAggregateOutputType = {
@@ -52,6 +54,7 @@ export type PostCountAggregateOutputType = {
   size: number
   type: number
   authorId: number
+  audience: number
   _all: number
 }
 
@@ -64,6 +67,7 @@ export type PostMinAggregateInputType = {
   size?: true
   type?: true
   authorId?: true
+  audience?: true
 }
 
 export type PostMaxAggregateInputType = {
@@ -74,6 +78,7 @@ export type PostMaxAggregateInputType = {
   size?: true
   type?: true
   authorId?: true
+  audience?: true
 }
 
 export type PostCountAggregateInputType = {
@@ -84,6 +89,7 @@ export type PostCountAggregateInputType = {
   size?: true
   type?: true
   authorId?: true
+  audience?: true
   _all?: true
 }
 
@@ -167,6 +173,7 @@ export type PostGroupByOutputType = {
   size: $Enums.PostSize
   type: string
   authorId: string
+  audience: $Enums.PostAudience
   _count: PostCountAggregateOutputType | null
   _min: PostMinAggregateOutputType | null
   _max: PostMaxAggregateOutputType | null
@@ -198,6 +205,7 @@ export type PostWhereInput = {
   size?: Prisma.EnumPostSizeFilter<"Post"> | $Enums.PostSize
   type?: Prisma.StringFilter<"Post"> | string
   authorId?: Prisma.StringFilter<"Post"> | string
+  audience?: Prisma.EnumPostAudienceFilter<"Post"> | $Enums.PostAudience
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -209,6 +217,7 @@ export type PostOrderByWithRelationInput = {
   size?: Prisma.SortOrder
   type?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  audience?: Prisma.SortOrder
   author?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -223,6 +232,7 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   size?: Prisma.EnumPostSizeFilter<"Post"> | $Enums.PostSize
   type?: Prisma.StringFilter<"Post"> | string
   authorId?: Prisma.StringFilter<"Post"> | string
+  audience?: Prisma.EnumPostAudienceFilter<"Post"> | $Enums.PostAudience
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
@@ -234,6 +244,7 @@ export type PostOrderByWithAggregationInput = {
   size?: Prisma.SortOrder
   type?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  audience?: Prisma.SortOrder
   _count?: Prisma.PostCountOrderByAggregateInput
   _max?: Prisma.PostMaxOrderByAggregateInput
   _min?: Prisma.PostMinOrderByAggregateInput
@@ -250,6 +261,7 @@ export type PostScalarWhereWithAggregatesInput = {
   size?: Prisma.EnumPostSizeWithAggregatesFilter<"Post"> | $Enums.PostSize
   type?: Prisma.StringWithAggregatesFilter<"Post"> | string
   authorId?: Prisma.StringWithAggregatesFilter<"Post"> | string
+  audience?: Prisma.EnumPostAudienceWithAggregatesFilter<"Post"> | $Enums.PostAudience
 }
 
 export type PostCreateInput = {
@@ -259,6 +271,7 @@ export type PostCreateInput = {
   img: string
   size?: $Enums.PostSize
   type?: string
+  audience?: $Enums.PostAudience
   author: Prisma.UserCreateNestedOneWithoutPostsInput
 }
 
@@ -270,6 +283,7 @@ export type PostUncheckedCreateInput = {
   size?: $Enums.PostSize
   type?: string
   authorId: string
+  audience?: $Enums.PostAudience
 }
 
 export type PostUpdateInput = {
@@ -279,6 +293,7 @@ export type PostUpdateInput = {
   img?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.EnumPostSizeFieldUpdateOperationsInput | $Enums.PostSize
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumPostAudienceFieldUpdateOperationsInput | $Enums.PostAudience
   author?: Prisma.UserUpdateOneRequiredWithoutPostsNestedInput
 }
 
@@ -290,6 +305,7 @@ export type PostUncheckedUpdateInput = {
   size?: Prisma.EnumPostSizeFieldUpdateOperationsInput | $Enums.PostSize
   type?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumPostAudienceFieldUpdateOperationsInput | $Enums.PostAudience
 }
 
 export type PostCreateManyInput = {
@@ -300,6 +316,7 @@ export type PostCreateManyInput = {
   size?: $Enums.PostSize
   type?: string
   authorId: string
+  audience?: $Enums.PostAudience
 }
 
 export type PostUpdateManyMutationInput = {
@@ -309,6 +326,7 @@ export type PostUpdateManyMutationInput = {
   img?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.EnumPostSizeFieldUpdateOperationsInput | $Enums.PostSize
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumPostAudienceFieldUpdateOperationsInput | $Enums.PostAudience
 }
 
 export type PostUncheckedUpdateManyInput = {
@@ -319,6 +337,7 @@ export type PostUncheckedUpdateManyInput = {
   size?: Prisma.EnumPostSizeFieldUpdateOperationsInput | $Enums.PostSize
   type?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumPostAudienceFieldUpdateOperationsInput | $Enums.PostAudience
 }
 
 export type PostListRelationFilter = {
@@ -339,6 +358,7 @@ export type PostCountOrderByAggregateInput = {
   size?: Prisma.SortOrder
   type?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  audience?: Prisma.SortOrder
 }
 
 export type PostMaxOrderByAggregateInput = {
@@ -349,6 +369,7 @@ export type PostMaxOrderByAggregateInput = {
   size?: Prisma.SortOrder
   type?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  audience?: Prisma.SortOrder
 }
 
 export type PostMinOrderByAggregateInput = {
@@ -359,6 +380,7 @@ export type PostMinOrderByAggregateInput = {
   size?: Prisma.SortOrder
   type?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  audience?: Prisma.SortOrder
 }
 
 export type PostCreateNestedManyWithoutAuthorInput = {
@@ -407,6 +429,10 @@ export type EnumPostSizeFieldUpdateOperationsInput = {
   set?: $Enums.PostSize
 }
 
+export type EnumPostAudienceFieldUpdateOperationsInput = {
+  set?: $Enums.PostAudience
+}
+
 export type PostCreateWithoutAuthorInput = {
   id?: string
   caption: string
@@ -414,6 +440,7 @@ export type PostCreateWithoutAuthorInput = {
   img: string
   size?: $Enums.PostSize
   type?: string
+  audience?: $Enums.PostAudience
 }
 
 export type PostUncheckedCreateWithoutAuthorInput = {
@@ -423,6 +450,7 @@ export type PostUncheckedCreateWithoutAuthorInput = {
   img: string
   size?: $Enums.PostSize
   type?: string
+  audience?: $Enums.PostAudience
 }
 
 export type PostCreateOrConnectWithoutAuthorInput = {
@@ -462,6 +490,7 @@ export type PostScalarWhereInput = {
   size?: Prisma.EnumPostSizeFilter<"Post"> | $Enums.PostSize
   type?: Prisma.StringFilter<"Post"> | string
   authorId?: Prisma.StringFilter<"Post"> | string
+  audience?: Prisma.EnumPostAudienceFilter<"Post"> | $Enums.PostAudience
 }
 
 export type PostCreateManyAuthorInput = {
@@ -471,6 +500,7 @@ export type PostCreateManyAuthorInput = {
   img: string
   size?: $Enums.PostSize
   type?: string
+  audience?: $Enums.PostAudience
 }
 
 export type PostUpdateWithoutAuthorInput = {
@@ -480,6 +510,7 @@ export type PostUpdateWithoutAuthorInput = {
   img?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.EnumPostSizeFieldUpdateOperationsInput | $Enums.PostSize
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumPostAudienceFieldUpdateOperationsInput | $Enums.PostAudience
 }
 
 export type PostUncheckedUpdateWithoutAuthorInput = {
@@ -489,6 +520,7 @@ export type PostUncheckedUpdateWithoutAuthorInput = {
   img?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.EnumPostSizeFieldUpdateOperationsInput | $Enums.PostSize
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumPostAudienceFieldUpdateOperationsInput | $Enums.PostAudience
 }
 
 export type PostUncheckedUpdateManyWithoutAuthorInput = {
@@ -498,6 +530,7 @@ export type PostUncheckedUpdateManyWithoutAuthorInput = {
   img?: Prisma.StringFieldUpdateOperationsInput | string
   size?: Prisma.EnumPostSizeFieldUpdateOperationsInput | $Enums.PostSize
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  audience?: Prisma.EnumPostAudienceFieldUpdateOperationsInput | $Enums.PostAudience
 }
 
 
@@ -510,6 +543,7 @@ export type PostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   size?: boolean
   type?: boolean
   authorId?: boolean
+  audience?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
 
@@ -521,6 +555,7 @@ export type PostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   size?: boolean
   type?: boolean
   authorId?: boolean
+  audience?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
 
@@ -532,6 +567,7 @@ export type PostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   size?: boolean
   type?: boolean
   authorId?: boolean
+  audience?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["post"]>
 
@@ -543,9 +579,10 @@ export type PostSelectScalar = {
   size?: boolean
   type?: boolean
   authorId?: boolean
+  audience?: boolean
 }
 
-export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "caption" | "post_date" | "img" | "size" | "type" | "authorId", ExtArgs["result"]["post"]>
+export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "caption" | "post_date" | "img" | "size" | "type" | "authorId" | "audience", ExtArgs["result"]["post"]>
 export type PostInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -569,6 +606,7 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     size: $Enums.PostSize
     type: string
     authorId: string
+    audience: $Enums.PostAudience
   }, ExtArgs["result"]["post"]>
   composites: {}
 }
@@ -1000,6 +1038,7 @@ export interface PostFieldRefs {
   readonly size: Prisma.FieldRef<"Post", 'PostSize'>
   readonly type: Prisma.FieldRef<"Post", 'String'>
   readonly authorId: Prisma.FieldRef<"Post", 'String'>
+  readonly audience: Prisma.FieldRef<"Post", 'PostAudience'>
 }
     
 

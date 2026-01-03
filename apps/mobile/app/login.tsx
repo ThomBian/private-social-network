@@ -21,31 +21,15 @@ const REQUEST_PHONE_OTP_MUTATION = gql`
 const LOGIN_WITH_PHONE_OTP_MUTATION = gql`
   mutation ($phoneNumber: String!, $code: Float!) {
     loginWithPhoneCode(phoneNumber: $phoneNumber, code: $code) {
-      id
-      username
-      phoneNumber
+      token
+      user {
+        id
+        username
+        phoneNumber
+      }
     }
   }
 `;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  content: {
-    padding: 40,
-  },
-  input: {
-    fontSize: 18,
-    borderBottomWidth: 2,
-    borderBottomColor: "#eee",
-    paddingVertical: 10,
-    marginBottom: 40,
-  },
-});
 
 export default function LoginScreen() {
   const { signIn } = useAuth();
@@ -85,7 +69,10 @@ export default function LoginScreen() {
     if (!result.data) {
       return alert(`Invalid code. Please try again. ${result.error?.message}`);
     }
-    await signIn(result.data.loginWithPhoneCode);
+    await signIn(
+      result.data.loginWithPhoneCode.user,
+      result.data.loginWithPhoneCode.token
+    );
   };
 
   const isLoading = resOtp.fetching || resLogin.fetching;
@@ -149,3 +136,22 @@ export default function LoginScreen() {
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  content: {
+    padding: 40,
+  },
+  input: {
+    fontSize: 18,
+    borderBottomWidth: 2,
+    borderBottomColor: "#eee",
+    paddingVertical: 10,
+    marginBottom: 40,
+  },
+});

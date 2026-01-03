@@ -9,6 +9,11 @@ type Profile {
   user: User!
 }
 
+type Connection {
+  status: String!
+  group: String!
+}
+
 type User {
   id: ID!
   username: String!
@@ -17,6 +22,7 @@ type User {
   createdAt: DateTime!
   profile: Profile
   posts: [Post!]
+  connectionToMe: Connection
 }
 
 """
@@ -28,11 +34,28 @@ type Post {
   id: ID!
   img: String!
   post_date: DateTime!
-  size: String!
+  size: PostSize!
   type: String!
   caption: String!
   author: User!
   authorId: ID!
+  audience: PostAudience!
+}
+
+enum PostSize {
+  rectangle
+  square
+}
+
+enum PostAudience {
+  FAMILY
+  FRIENDS
+  ALL
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
 }
 
 type Query {
@@ -47,8 +70,11 @@ type Query {
 
 type Mutation {
   requestPhoneVerificationCode(phoneNumber: String!): Float!
-  loginWithPhoneCode(phoneNumber: String!, code: Float!): User
+  loginWithPhoneCode(phoneNumber: String!, code: Float!): AuthPayload!
+  requestFollow(ownerId: String!, viewerId: String!): Boolean!
+  approveFollow(ownerId: String!, viewerId: String!, group: String!): Boolean!
+  declineFollow(ownerId: String!, viewerId: String!): Boolean!
   updateProfile(userId: ID!, bio: String!): Profile!
-  createPost(caption: String!, img: String!, size: String!, type: String!, authorId: String!): Post!
+  createPost(caption: String!, img: String!, size: String!, type: String!): Post!
   deletePost(id: String!): Post!
 }

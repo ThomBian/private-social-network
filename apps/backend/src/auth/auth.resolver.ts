@@ -1,6 +1,6 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { User } from '../users/user.model';
+import { AuthPayload } from './auth.payload';
 
 @Resolver()
 export class AuthResolver {
@@ -14,12 +14,11 @@ export class AuthResolver {
     return code;
   }
 
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => AuthPayload)
   async loginWithPhoneCode(
     @Args('phoneNumber') phoneNumber: string,
     @Args('code') code: number,
-  ): Promise<User | null> {
-    const user = await this.authService.loginWithPhoneCode(phoneNumber, code);
-    return user;
+  ): Promise<AuthPayload | null> {
+    return await this.authService.loginWithPhoneCode(phoneNumber, code);
   }
 }
