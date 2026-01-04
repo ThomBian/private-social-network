@@ -59,7 +59,7 @@ type AuthPayload {
 }
 
 type Query {
-  users: [User!]!
+  searchUsers(query: String!): [User!]!
   user(id: ID!): User
   userByUsername(username: String!): User
   profile(userId: ID!): Profile

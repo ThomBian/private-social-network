@@ -15,9 +15,11 @@ export class UsersResolver {
     private readonly connectionService: ConnectionService,
   ) {}
 
-  @Query(() => [User], { name: 'users' })
-  async getUsers(): Promise<User[]> {
-    return this.usersService.findAll() as Promise<User[]> | [];
+  @Query(() => [User], { name: 'searchUsers' })
+  async getUsers(
+    @Args('query', { type: () => String }) query: string,
+  ): Promise<User[]> {
+    return this.usersService.queryUsers(query) as Promise<User[]> | [];
   }
 
   @Query(() => User, { name: 'user', nullable: true })

@@ -49,9 +49,8 @@ function RootLayoutNav() {
     <Provider value={client}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="login" options={{ animation: "fade" }} />
-        <Stack.Screen name="index" />
         <Stack.Screen name="[username]" />
-        <Stack.Screen name="create" options={{ title: "Nouveau postr" }} />
+        <Stack.Screen name="create" options={{ title: "New Drop" }} />
       </Stack>
     </Provider>
   );

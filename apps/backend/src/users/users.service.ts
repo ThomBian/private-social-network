@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '../../generated/prisma/client';
-import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly connectionService: ConnectionService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findOrCreateUserByPhoneNumber(phoneNumber: string): Promise<User> {
     let user: User | null = await this.prisma.user.findUnique({
@@ -78,5 +74,17 @@ export class UsersService {
       console.error('Error fetching user by username:', error);
       throw error;
     }
+  }
+
+  async queryUsers(query: string): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: {
+        username: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+      take: 10,
+    });
   }
 }
