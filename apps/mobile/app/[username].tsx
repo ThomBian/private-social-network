@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { Alert, SectionList, StyleSheet, View } from "react-native";
+import { SectionList, StyleSheet, View } from "react-native";
 import { BentoRowRenderer } from "../src/components/profile/BentoRowRenderer";
 import { groupPostsByMonth } from "../src/utils/bentoEngine";
 import { gql, useQuery } from "urql";
@@ -7,9 +7,7 @@ import { useMemo } from "react";
 import { Post } from "@social/types";
 import { Text } from "../src/components/design-kit/Text";
 import { Screen } from "../src/components/design-kit/Screen";
-import { Button } from "../src/components/design-kit/Button";
 import { theme } from "../src/theme/theme";
-import { useAuth } from "../src/context/AuthContext";
 
 const PROFILE_INFO_QUERY = gql`
   query ($username: String!) {
@@ -42,7 +40,6 @@ const POSTS_QUERY = gql`
 
 export default function Profile() {
   const { username } = useLocalSearchParams();
-  const { signOut, user } = useAuth();
 
   const [
     { data: userProfileInfo, fetching: profileLoading, error: profileError },
@@ -56,8 +53,6 @@ export default function Profile() {
     variables: { username },
     pause: profileLoading || !!profileError,
   });
-
-  const isMyProfile = user?.username === username;
 
   const sections = useMemo(() => {
     if (isFetchingPosts || error || !data) {
@@ -83,21 +78,6 @@ export default function Profile() {
     );
   }
 
-  const handleLogout = () => {
-    Alert.alert(`Confirm logout`, "Are you sure you want to log out?", [
-      {
-        text: "Cancel",
-        onPress: () => {},
-        style: "cancel",
-      },
-      {
-        text: "Logout",
-        onPress: () => signOut(),
-        style: "destructive",
-      },
-    ]);
-  };
-
   const { profile, connectionToMe } = userProfileInfo?.userByUsername ?? {};
 
   return (
@@ -105,21 +85,11 @@ export default function Profile() {
       <View style={styles.headerContainer}>
         <View style={styles.header}>
           <Text variant="h1">{username}</Text>
-
-          {isMyProfile && (
-            <Button
-              icon="log-out-outline"
-              onPress={handleLogout}
-              variant="ghost"
-            />
-          )}
         </View>
 
         <View>
           <Text>{profile?.bio}</Text>
-          {!isMyProfile && (
-            <Text>Connection status: {connectionToMe?.status || "N/A"}</Text>
-          )}
+          <Text>Connection status: {connectionToMe?.status || "N/A"}</Text>
         </View>
       </View>
 

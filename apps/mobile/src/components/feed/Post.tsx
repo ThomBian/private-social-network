@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { theme } from "../../theme/theme";
+import { useAuth } from "../../context/AuthContext";
 
 interface Props {
   username: string;
@@ -19,11 +20,16 @@ interface Props {
 const { width } = Dimensions.get("window");
 
 export default function Post({ username, caption, img, size }: Props) {
+  const { user } = useAuth();
+
+  const profileURL =
+    user?.username === username ? "/profile" : (`/${username}` as const);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.header}
-        onPress={() => router.push(`/${username}`)}
+        onPress={() => router.push(profileURL)}
       >
         <View style={styles.avatar} />
         <Text>{username}</Text>

@@ -61,6 +61,7 @@ export default function Feed() {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={Header}
         ListEmptyComponent={EmptyState}
+        ListFooterComponent={<></>}
       />
     );
   }
@@ -68,7 +69,6 @@ export default function Feed() {
   return (
     <Screen>
       <StatusBar barStyle="dark-content" />
-
       {content}
     </Screen>
   );
