@@ -1,12 +1,12 @@
 import { FlatList, StatusBar } from "react-native";
-import Header from "../src/components/feed/Header";
-import Post from "../src/components/feed/Post";
+import Header from "../../src/components/feed/Header";
+import Post from "../../src/components/feed/Post";
 import { useQuery } from "urql";
 import { useMemo } from "react";
 import { Post as PostType } from "@social/types";
-import { EmptyState } from "../src/components/feed/EmptyState";
-import { Text } from "../src/components/design-kit/Text";
-import { Screen } from "../src/components/design-kit/Screen";
+import { EmptyState } from "../../src/components/feed/EmptyState";
+import { Text } from "../../src/components/design-kit/Text";
+import { Screen } from "../../src/components/design-kit/Screen";
 
 const feedQuery = `
   query {

@@ -11,6 +11,8 @@ export const theme = {
     textDim: "#8E8E93", // Subtitles
     border: "#E0E0E0",
 
+    gray600: "#6E6E73",
+
     // Feedback
     error: "#FF3B30",
     success: "#34C759",

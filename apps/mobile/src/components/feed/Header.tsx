@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#eee",
     marginBottom: 20,
     paddingHorizontal: theme.spacing.s,
+    paddingRight: 0,
   },
   iconButton: {
     width: 28,
@@ -29,13 +30,15 @@ export default function Header() {
 
   return (
     <View style={styles.container}>
+      <Text variant="h2" accessibilityLabel="Papaya">
+        Papaya 🥭
+      </Text>
+
       <Button
         icon="add"
         variant="ghost"
         onPress={() => router.push("/create")}
       />
-
-      <Text variant="h2">Papaya 🥭</Text>
     </View>
   );
 }
