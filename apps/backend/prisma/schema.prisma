@@ -68,6 +68,8 @@ enum ConnectionStatus {
   BLOCKED
 }
 model Connection {
+  id String @id @default(uuid())
+
   owner User @relation("myConnections", fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId String
 
@@ -78,6 +80,6 @@ model Connection {
 
   status ConnectionStatus @default(PENDING)
 
-  @@id([ownerId, viewerId])
+  @@unique([ownerId, viewerId])
   @@index([viewerId, status, group])
 }

@@ -2,40 +2,62 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConnectionStatus, RelationGroup } from '../../generated/prisma/enums';
 import { Connection } from '../../generated/prisma/client';
+import { User } from '../users/user.model';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ConnectionService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly usersService: UsersService,
+  ) {}
 
-  async requestFollow(ownerId: string, viewerId: string): Promise<boolean> {
-    if (ownerId === viewerId) {
+  async requestFollow(
+    username: string,
+    viewer: User | null,
+  ): Promise<Connection | null> {
+    if (!viewer) {
+      throw new Error('Authentication required to request follow');
+    }
+
+    if (username === viewer.username) {
       throw new Error('Owner and viewer cannot be the same');
     }
 
-    await this.prismaService.connection.upsert({
+    const owner = await this.usersService.findByUsernameLight(username);
+
+    if (!owner) {
+      throw new Error('User not found');
+    }
+
+    const existingConnection = await this.prismaService.connection.findUnique({
       where: {
-        ownerId_viewerId: { ownerId, viewerId },
+        ownerId_viewerId: { ownerId: owner.id, viewerId: viewer.id },
       },
-      update: {
-        status: ConnectionStatus.PENDING,
-      },
-      create: {
-        ownerId,
-        viewerId,
+    });
+
+    if (existingConnection) {
+      throw new Error(
+        'Follow request already exists or you are already connected',
+      );
+    }
+
+    return await this.prismaService.connection.create({
+      data: {
+        ownerId: owner.id,
+        viewerId: viewer.id,
         status: ConnectionStatus.PENDING,
         group: RelationGroup.OTHERS,
       },
     });
-
-    return true;
   }
 
   async approveFollow(
     ownerId: string,
     viewerId: string,
     group: RelationGroup,
-  ): Promise<boolean> {
-    await this.prismaService.connection.update({
+  ): Promise<Connection> {
+    return await this.prismaService.connection.update({
       where: {
         ownerId_viewerId: { ownerId, viewerId },
       },
@@ -44,16 +66,21 @@ export class ConnectionService {
         group,
       },
     });
-    return true;
   }
 
-  async declineFollow(ownerId: string, viewerId: string): Promise<boolean> {
-    await this.prismaService.connection.delete({
-      where: {
-        ownerId_viewerId: { ownerId, viewerId },
-      },
+  async cancelFollow(
+    followerId: string,
+    username: string,
+  ): Promise<Connection | null> {
+    const owner = await this.usersService.findByUsernameLight(username);
+
+    if (!owner) {
+      throw new Error('User not found');
+    }
+
+    return await this.prismaService.connection.delete({
+      where: { ownerId_viewerId: { ownerId: owner.id, viewerId: followerId } },
     });
-    return true;
   }
 
   async getApprovedConnection(

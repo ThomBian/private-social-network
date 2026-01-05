@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConnectionService } from './connection.service';
 import { ConnectionResolver } from './connection.resolver';
+import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [],
+  imports: [forwardRef(() => UsersModule)],
   providers: [ConnectionService, ConnectionResolver],
   exports: [ConnectionService],
 })

@@ -25,6 +25,7 @@ export type AggregateConnection = {
 }
 
 export type ConnectionMinAggregateOutputType = {
+  id: string | null
   ownerId: string | null
   viewerId: string | null
   group: $Enums.RelationGroup | null
@@ -32,6 +33,7 @@ export type ConnectionMinAggregateOutputType = {
 }
 
 export type ConnectionMaxAggregateOutputType = {
+  id: string | null
   ownerId: string | null
   viewerId: string | null
   group: $Enums.RelationGroup | null
@@ -39,6 +41,7 @@ export type ConnectionMaxAggregateOutputType = {
 }
 
 export type ConnectionCountAggregateOutputType = {
+  id: number
   ownerId: number
   viewerId: number
   group: number
@@ -48,6 +51,7 @@ export type ConnectionCountAggregateOutputType = {
 
 
 export type ConnectionMinAggregateInputType = {
+  id?: true
   ownerId?: true
   viewerId?: true
   group?: true
@@ -55,6 +59,7 @@ export type ConnectionMinAggregateInputType = {
 }
 
 export type ConnectionMaxAggregateInputType = {
+  id?: true
   ownerId?: true
   viewerId?: true
   group?: true
@@ -62,6 +67,7 @@ export type ConnectionMaxAggregateInputType = {
 }
 
 export type ConnectionCountAggregateInputType = {
+  id?: true
   ownerId?: true
   viewerId?: true
   group?: true
@@ -142,6 +148,7 @@ export type ConnectionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 export type ConnectionGroupByOutputType = {
+  id: string
   ownerId: string
   viewerId: string
   group: $Enums.RelationGroup
@@ -170,6 +177,7 @@ export type ConnectionWhereInput = {
   AND?: Prisma.ConnectionWhereInput | Prisma.ConnectionWhereInput[]
   OR?: Prisma.ConnectionWhereInput[]
   NOT?: Prisma.ConnectionWhereInput | Prisma.ConnectionWhereInput[]
+  id?: Prisma.StringFilter<"Connection"> | string
   ownerId?: Prisma.StringFilter<"Connection"> | string
   viewerId?: Prisma.StringFilter<"Connection"> | string
   group?: Prisma.EnumRelationGroupFilter<"Connection"> | $Enums.RelationGroup
@@ -179,6 +187,7 @@ export type ConnectionWhereInput = {
 }
 
 export type ConnectionOrderByWithRelationInput = {
+  id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   viewerId?: Prisma.SortOrder
   group?: Prisma.SortOrder
@@ -188,6 +197,7 @@ export type ConnectionOrderByWithRelationInput = {
 }
 
 export type ConnectionWhereUniqueInput = Prisma.AtLeast<{
+  id?: string
   ownerId_viewerId?: Prisma.ConnectionOwnerIdViewerIdCompoundUniqueInput
   AND?: Prisma.ConnectionWhereInput | Prisma.ConnectionWhereInput[]
   OR?: Prisma.ConnectionWhereInput[]
@@ -198,9 +208,10 @@ export type ConnectionWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumConnectionStatusFilter<"Connection"> | $Enums.ConnectionStatus
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   viewer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "ownerId_viewerId">
+}, "id" | "ownerId_viewerId">
 
 export type ConnectionOrderByWithAggregationInput = {
+  id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   viewerId?: Prisma.SortOrder
   group?: Prisma.SortOrder
@@ -214,6 +225,7 @@ export type ConnectionScalarWhereWithAggregatesInput = {
   AND?: Prisma.ConnectionScalarWhereWithAggregatesInput | Prisma.ConnectionScalarWhereWithAggregatesInput[]
   OR?: Prisma.ConnectionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ConnectionScalarWhereWithAggregatesInput | Prisma.ConnectionScalarWhereWithAggregatesInput[]
+  id?: Prisma.StringWithAggregatesFilter<"Connection"> | string
   ownerId?: Prisma.StringWithAggregatesFilter<"Connection"> | string
   viewerId?: Prisma.StringWithAggregatesFilter<"Connection"> | string
   group?: Prisma.EnumRelationGroupWithAggregatesFilter<"Connection"> | $Enums.RelationGroup
@@ -221,6 +233,7 @@ export type ConnectionScalarWhereWithAggregatesInput = {
 }
 
 export type ConnectionCreateInput = {
+  id?: string
   group?: $Enums.RelationGroup
   status?: $Enums.ConnectionStatus
   owner: Prisma.UserCreateNestedOneWithoutMyConnectionsInput
@@ -228,6 +241,7 @@ export type ConnectionCreateInput = {
 }
 
 export type ConnectionUncheckedCreateInput = {
+  id?: string
   ownerId: string
   viewerId: string
   group?: $Enums.RelationGroup
@@ -235,6 +249,7 @@ export type ConnectionUncheckedCreateInput = {
 }
 
 export type ConnectionUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   owner?: Prisma.UserUpdateOneRequiredWithoutMyConnectionsNestedInput
@@ -242,6 +257,7 @@ export type ConnectionUpdateInput = {
 }
 
 export type ConnectionUncheckedUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   viewerId?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
@@ -249,6 +265,7 @@ export type ConnectionUncheckedUpdateInput = {
 }
 
 export type ConnectionCreateManyInput = {
+  id?: string
   ownerId: string
   viewerId: string
   group?: $Enums.RelationGroup
@@ -256,11 +273,13 @@ export type ConnectionCreateManyInput = {
 }
 
 export type ConnectionUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
 }
 
 export type ConnectionUncheckedUpdateManyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   viewerId?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
@@ -283,6 +302,7 @@ export type ConnectionOwnerIdViewerIdCompoundUniqueInput = {
 }
 
 export type ConnectionCountOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   viewerId?: Prisma.SortOrder
   group?: Prisma.SortOrder
@@ -290,6 +310,7 @@ export type ConnectionCountOrderByAggregateInput = {
 }
 
 export type ConnectionMaxOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   viewerId?: Prisma.SortOrder
   group?: Prisma.SortOrder
@@ -297,6 +318,7 @@ export type ConnectionMaxOrderByAggregateInput = {
 }
 
 export type ConnectionMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   viewerId?: Prisma.SortOrder
   group?: Prisma.SortOrder
@@ -396,12 +418,14 @@ export type EnumConnectionStatusFieldUpdateOperationsInput = {
 }
 
 export type ConnectionCreateWithoutOwnerInput = {
+  id?: string
   group?: $Enums.RelationGroup
   status?: $Enums.ConnectionStatus
   viewer: Prisma.UserCreateNestedOneWithoutConnectedToMeInput
 }
 
 export type ConnectionUncheckedCreateWithoutOwnerInput = {
+  id?: string
   viewerId: string
   group?: $Enums.RelationGroup
   status?: $Enums.ConnectionStatus
@@ -418,12 +442,14 @@ export type ConnectionCreateManyOwnerInputEnvelope = {
 }
 
 export type ConnectionCreateWithoutViewerInput = {
+  id?: string
   group?: $Enums.RelationGroup
   status?: $Enums.ConnectionStatus
   owner: Prisma.UserCreateNestedOneWithoutMyConnectionsInput
 }
 
 export type ConnectionUncheckedCreateWithoutViewerInput = {
+  id?: string
   ownerId: string
   group?: $Enums.RelationGroup
   status?: $Enums.ConnectionStatus
@@ -459,6 +485,7 @@ export type ConnectionScalarWhereInput = {
   AND?: Prisma.ConnectionScalarWhereInput | Prisma.ConnectionScalarWhereInput[]
   OR?: Prisma.ConnectionScalarWhereInput[]
   NOT?: Prisma.ConnectionScalarWhereInput | Prisma.ConnectionScalarWhereInput[]
+  id?: Prisma.StringFilter<"Connection"> | string
   ownerId?: Prisma.StringFilter<"Connection"> | string
   viewerId?: Prisma.StringFilter<"Connection"> | string
   group?: Prisma.EnumRelationGroupFilter<"Connection"> | $Enums.RelationGroup
@@ -482,48 +509,56 @@ export type ConnectionUpdateManyWithWhereWithoutViewerInput = {
 }
 
 export type ConnectionCreateManyOwnerInput = {
+  id?: string
   viewerId: string
   group?: $Enums.RelationGroup
   status?: $Enums.ConnectionStatus
 }
 
 export type ConnectionCreateManyViewerInput = {
+  id?: string
   ownerId: string
   group?: $Enums.RelationGroup
   status?: $Enums.ConnectionStatus
 }
 
 export type ConnectionUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   viewer?: Prisma.UserUpdateOneRequiredWithoutConnectedToMeNestedInput
 }
 
 export type ConnectionUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   viewerId?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
 }
 
 export type ConnectionUncheckedUpdateManyWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   viewerId?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
 }
 
 export type ConnectionUpdateWithoutViewerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
   owner?: Prisma.UserUpdateOneRequiredWithoutMyConnectionsNestedInput
 }
 
 export type ConnectionUncheckedUpdateWithoutViewerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
 }
 
 export type ConnectionUncheckedUpdateManyWithoutViewerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   group?: Prisma.EnumRelationGroupFieldUpdateOperationsInput | $Enums.RelationGroup
   status?: Prisma.EnumConnectionStatusFieldUpdateOperationsInput | $Enums.ConnectionStatus
@@ -532,6 +567,7 @@ export type ConnectionUncheckedUpdateManyWithoutViewerInput = {
 
 
 export type ConnectionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   ownerId?: boolean
   viewerId?: boolean
   group?: boolean
@@ -541,6 +577,7 @@ export type ConnectionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 }, ExtArgs["result"]["connection"]>
 
 export type ConnectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   ownerId?: boolean
   viewerId?: boolean
   group?: boolean
@@ -550,6 +587,7 @@ export type ConnectionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 }, ExtArgs["result"]["connection"]>
 
 export type ConnectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  id?: boolean
   ownerId?: boolean
   viewerId?: boolean
   group?: boolean
@@ -559,13 +597,14 @@ export type ConnectionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 }, ExtArgs["result"]["connection"]>
 
 export type ConnectionSelectScalar = {
+  id?: boolean
   ownerId?: boolean
   viewerId?: boolean
   group?: boolean
   status?: boolean
 }
 
-export type ConnectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"ownerId" | "viewerId" | "group" | "status", ExtArgs["result"]["connection"]>
+export type ConnectionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "viewerId" | "group" | "status", ExtArgs["result"]["connection"]>
 export type ConnectionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   viewer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -586,6 +625,7 @@ export type $ConnectionPayload<ExtArgs extends runtime.Types.Extensions.Internal
     viewer: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    id: string
     ownerId: string
     viewerId: string
     group: $Enums.RelationGroup
@@ -673,8 +713,8 @@ export interface ConnectionDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * // Get first 10 Connections
    * const connections = await prisma.connection.findMany({ take: 10 })
    * 
-   * // Only select the `ownerId`
-   * const connectionWithOwnerIdOnly = await prisma.connection.findMany({ select: { ownerId: true } })
+   * // Only select the `id`
+   * const connectionWithIdOnly = await prisma.connection.findMany({ select: { id: true } })
    * 
    */
   findMany<T extends ConnectionFindManyArgs>(args?: Prisma.SelectSubset<T, ConnectionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConnectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -718,9 +758,9 @@ export interface ConnectionDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   ]
    * })
    * 
-   * // Create many Connections and only return the `ownerId`
-   * const connectionWithOwnerIdOnly = await prisma.connection.createManyAndReturn({
-   *   select: { ownerId: true },
+   * // Create many Connections and only return the `id`
+   * const connectionWithIdOnly = await prisma.connection.createManyAndReturn({
+   *   select: { id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -809,9 +849,9 @@ export interface ConnectionDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   ]
    * })
    * 
-   * // Update zero or more Connections and only return the `ownerId`
-   * const connectionWithOwnerIdOnly = await prisma.connection.updateManyAndReturn({
-   *   select: { ownerId: true },
+   * // Update zero or more Connections and only return the `id`
+   * const connectionWithIdOnly = await prisma.connection.updateManyAndReturn({
+   *   select: { id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1015,6 +1055,7 @@ export interface Prisma__ConnectionClient<T, Null = never, ExtArgs extends runti
  * Fields of the Connection model
  */
 export interface ConnectionFieldRefs {
+  readonly id: Prisma.FieldRef<"Connection", 'String'>
   readonly ownerId: Prisma.FieldRef<"Connection", 'String'>
   readonly viewerId: Prisma.FieldRef<"Connection", 'String'>
   readonly group: Prisma.FieldRef<"Connection", 'RelationGroup'>

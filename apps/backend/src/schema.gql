@@ -10,6 +10,7 @@ type Profile {
 }
 
 type Connection {
+  id: String!
   status: String!
   group: String!
 }
@@ -71,9 +72,9 @@ type Query {
 type Mutation {
   requestPhoneVerificationCode(phoneNumber: String!): Float!
   loginWithPhoneCode(phoneNumber: String!, code: Float!): AuthPayload!
-  requestFollow(ownerId: String!, viewerId: String!): Boolean!
-  approveFollow(ownerId: String!, viewerId: String!, group: String!): Boolean!
-  declineFollow(ownerId: String!, viewerId: String!): Boolean!
+  requestFollow(username: String!): Connection!
+  approveFollow(followerId: String!, group: String!): Connection!
+  cancelFollow(username: String!): Connection!
   updateProfile(userId: ID!, bio: String!): Profile!
   createPost(caption: String!, img: String!, size: String!, type: String!): Post!
   deletePost(id: String!): Post!

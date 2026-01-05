@@ -23,15 +23,13 @@ interface SearchUserResult {
 export default function SearchUser() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [{ data, fetching, error }] = useQuery({
+  const [{ data, fetching }] = useQuery({
     query: SEARCH_USERS_QUERY,
     variables: { query: searchQuery },
     pause: searchQuery.length <= 3,
   });
 
   const matchingUsers: SearchUserResult[] = data ? data.searchUsers : [];
-
-  console.log({ error });
 
   return (
     <Screen>

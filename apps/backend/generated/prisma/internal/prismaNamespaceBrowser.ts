@@ -108,6 +108,7 @@ export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof Post
 
 
 export const ConnectionScalarFieldEnum = {
+  id: 'id',
   ownerId: 'ownerId',
   viewerId: 'viewerId',
   group: 'group',

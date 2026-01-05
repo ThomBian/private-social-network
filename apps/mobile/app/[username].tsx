@@ -8,6 +8,8 @@ import { Post } from "@social/types";
 import { Text } from "../src/components/design-kit/Text";
 import { Screen } from "../src/components/design-kit/Screen";
 import { theme } from "../src/theme/theme";
+import ConnectionButton from "../src/components/profile/ConnectionButton";
+import { useProfileConnection } from "../src/hooks/useProfileConnection";
 
 const PROFILE_INFO_QUERY = gql`
   query ($username: String!) {
@@ -43,9 +45,11 @@ export default function Profile() {
 
   const [
     { data: userProfileInfo, fetching: profileLoading, error: profileError },
+    refetchProfileInfo,
   ] = useQuery({
     query: PROFILE_INFO_QUERY,
     variables: { username },
+    requestPolicy: "cache-and-network",
   });
 
   const [{ data, fetching: isFetchingPosts, error }] = useQuery({
@@ -53,6 +57,14 @@ export default function Profile() {
     variables: { username },
     pause: profileLoading || !!profileError,
   });
+
+  const { isLoading, handleConnect, handleDisconnect } = useProfileConnection(
+    username,
+    () => {
+      console.log("Refetching profile info...");
+      refetchProfileInfo();
+    }
+  );
 
   const sections = useMemo(() => {
     if (isFetchingPosts || error || !data) {
@@ -89,7 +101,12 @@ export default function Profile() {
 
         <View>
           <Text>{profile?.bio}</Text>
-          <Text>Connection status: {connectionToMe?.status || "N/A"}</Text>
+          <ConnectionButton
+            isLoading={isLoading}
+            connection={connectionToMe}
+            onConnect={handleConnect}
+            onDisconnect={handleDisconnect}
+          />
         </View>
       </View>
 

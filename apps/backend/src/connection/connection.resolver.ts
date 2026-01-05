@@ -1,40 +1,45 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { ConnectionService } from './connection.service';
 import { RelationGroup } from '../../generated/prisma/enums';
+import { UseGuards } from '@nestjs/common';
+import { GqlJwtAuthGuard } from '../auth/jwt.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
+import { User } from '../users/user.model';
+import { Connection } from './connection.model';
 
 @Resolver()
 export class ConnectionResolver {
   constructor(private readonly connectionService: ConnectionService) {}
 
-  @Mutation(() => Boolean)
+  @UseGuards(GqlJwtAuthGuard)
+  @Mutation(() => Connection)
   async requestFollow(
-    @Args('ownerId') ownerId: string,
-    @Args('viewerId') viewerId: string,
-  ): Promise<boolean> {
-    // Placeholder implementation
-    return await this.connectionService.requestFollow(ownerId, viewerId);
+    @Args('username') username: string,
+    @CurrentUser() viewer: User | null,
+  ): Promise<Connection | null> {
+    return await this.connectionService.requestFollow(username, viewer);
   }
 
-  @Mutation(() => Boolean)
+  @UseGuards(GqlJwtAuthGuard)
+  @Mutation(() => Connection)
   async approveFollow(
-    @Args('ownerId') ownerId: string,
-    @Args('viewerId') viewerId: string,
+    @CurrentUser() owner: User,
+    @Args('followerId') followerId: string,
     @Args('group') group: string,
-  ): Promise<boolean> {
-    // Placeholder implementation
+  ): Promise<Connection | null> {
     return await this.connectionService.approveFollow(
-      ownerId,
-      viewerId,
+      owner.id,
+      followerId,
       group as RelationGroup,
     );
   }
 
-  @Mutation(() => Boolean)
-  async declineFollow(
-    @Args('ownerId') ownerId: string,
-    @Args('viewerId') viewerId: string,
-  ): Promise<boolean> {
-    // Placeholder implementation
-    return await this.connectionService.declineFollow(ownerId, viewerId);
+  @UseGuards(GqlJwtAuthGuard)
+  @Mutation(() => Connection)
+  async cancelFollow(
+    @CurrentUser() follower: User,
+    @Args('username') username: string,
+  ): Promise<Connection | null> {
+    return await this.connectionService.cancelFollow(follower.id, username);
   }
 }
