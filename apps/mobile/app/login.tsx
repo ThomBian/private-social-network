@@ -11,6 +11,7 @@ import {
 
 import { Text } from "../src/components/design-kit/Text";
 import { Button } from "../src/components/design-kit/Button";
+import { theme } from "../src/theme/theme";
 
 const REQUEST_PHONE_OTP_MUTATION = gql`
   mutation ($phoneNumber: String!) {
@@ -84,15 +85,7 @@ export default function LoginScreen() {
     >
       <View style={styles.content}>
         <Text variant="h1">
-          {step === "phone"
-            ? "What's your phone number?"
-            : "Enter validation code"}
-        </Text>
-
-        <Text variant="h2">
-          {step === "phone"
-            ? "A 4-digit code will be sent to your phone."
-            : `Code sent to ${phoneNumber}`}
+          {step === "phone" ? "My phone number is:" : "Enter validation code"}
         </Text>
 
         {step === "phone" ? (
@@ -119,6 +112,18 @@ export default function LoginScreen() {
           />
         )}
 
+        <Text variant="caption">
+          {step === "phone"
+            ? "A 4-digit code will be sent to your phone."
+            : `Code sent to ${phoneNumber}`}
+        </Text>
+
+        {step === "phone" && (
+          <Text variant="caption">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+          </Text>
+        )}
+
         <Button
           onPress={step === "phone" ? handleRequestOtp : handleVerifyCode}
           loading={isLoading}
@@ -140,18 +145,19 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: theme.colors.background,
     alignItems: "center",
     justifyContent: "center",
   },
   content: {
-    padding: 40,
+    padding: theme.spacing.l,
+    gap: theme.spacing.m,
   },
   input: {
     fontSize: 18,
     borderBottomWidth: 2,
-    borderBottomColor: "#eee",
-    paddingVertical: 10,
-    marginBottom: 40,
+    borderBottomColor: theme.colors.border,
+    paddingVertical: theme.spacing.m,
+    marginBottom: theme.spacing.l,
   },
 });

@@ -12,7 +12,7 @@ export class PostResolver {
 
   @UseGuards(GqlJwtAuthGuard)
   @Query(() => [Post], { name: 'feed' })
-  async getFeed(@CurrentUser() user: User | null): Promise<Post[]> {
+  async getFeed(@CurrentUser() user: User | null) {
     if (!user) return [];
     return await this.postService.getFeedFor(user.id);
   }
@@ -22,16 +22,14 @@ export class PostResolver {
   async getProfileFeed(
     @CurrentUser() viewer: User | null,
     @Args('username', { type: () => String }) username: string,
-  ): Promise<Post[]> {
+  ) {
     if (!viewer) return [];
     return this.postService.getProfileFeed(username, viewer.id);
   }
 
   @Query(() => Post, { name: 'post', nullable: true })
-  async getPost(
-    @Args('id', { type: () => String }) id: string,
-  ): Promise<Post | null> {
-    return this.postService.findById(id);
+  async getPost(@Args('id', { type: () => String }) id: string) {
+    return await this.postService.findById(id);
   }
 
   @UseGuards(GqlJwtAuthGuard)
@@ -42,7 +40,7 @@ export class PostResolver {
     @Args('size', { type: () => String }) size: 'rectangle' | 'square',
     @Args('type', { type: () => String }) type: string,
     @CurrentUser() author: User | null,
-  ): Promise<Post> {
+  ) {
     if (!author) throw new Error('Unauthorized');
 
     return this.postService.create({
@@ -55,9 +53,7 @@ export class PostResolver {
   }
 
   @Mutation(() => Post)
-  async deletePost(
-    @Args('id', { type: () => String }) id: string,
-  ): Promise<Post | null> {
+  async deletePost(@Args('id', { type: () => String }) id: string) {
     return this.postService.delete(id);
   }
 }

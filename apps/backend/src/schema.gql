@@ -4,15 +4,17 @@
 
 type Profile {
   id: ID!
-  bio: String!
+  bio: String
   userId: ID!
-  user: User!
+  avatar: String
+  fullName: String
 }
 
 type Connection {
   id: String!
   status: String!
   group: String!
+  viewer: User!
 }
 
 type User {
@@ -21,7 +23,7 @@ type User {
   email: String!
   phoneNumber: String!
   createdAt: DateTime!
-  profile: Profile
+  profile: Profile!
   posts: [Post!]
   connectionToMe: Connection
 }
@@ -39,7 +41,6 @@ type Post {
   type: String!
   caption: String!
   author: User!
-  authorId: ID!
   audience: PostAudience!
 }
 
@@ -63,6 +64,7 @@ type Query {
   searchUsers(query: String!): [User!]!
   user(id: ID!): User
   userByUsername(username: String!): User
+  connectionRequests: [Connection!]!
   profile(userId: ID!): Profile
   feed: [Post!]!
   profilePosts(username: String!): [Post!]!

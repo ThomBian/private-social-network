@@ -16,6 +16,9 @@ export class UsersService {
         data: {
           phoneNumber,
           username: `user-${phoneNumber.slice(-4)}`,
+          profile: {
+            create: {},
+          },
         },
       });
     }

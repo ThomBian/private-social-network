@@ -20,8 +20,8 @@ export class User {
   @Field()
   createdAt: Date;
 
-  @Field(() => Profile, { nullable: true })
-  profile?: Profile;
+  @Field(() => Profile)
+  profile: Profile;
 
   @Field(() => [Post], { nullable: true })
   posts?: Post[];

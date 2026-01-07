@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ConnectionService } from './connection.service';
 import { RelationGroup } from '../../generated/prisma/enums';
 import { UseGuards } from '@nestjs/common';
@@ -41,5 +41,11 @@ export class ConnectionResolver {
     @Args('username') username: string,
   ): Promise<Connection | null> {
     return await this.connectionService.cancelFollow(follower.id, username);
+  }
+
+  @UseGuards(GqlJwtAuthGuard)
+  @Query(() => [Connection])
+  async connectionRequests(@CurrentUser() owner: User): Promise<Connection[]> {
+    return await this.connectionService.connectionRequests(owner.id);
   }
 }

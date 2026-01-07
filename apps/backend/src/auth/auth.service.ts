@@ -66,7 +66,6 @@ export class AuthService {
 
     return {
       user: user,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       token: this.jwtService.sign(payload),
     };
   }
@@ -78,7 +77,6 @@ export class AuthService {
     token: string,
   ): { sub: string; id: string; username: string } | null {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const decoded = this.jwtService.verify(token) as unknown as {
         sub: string;
         id: string;

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
 import { ConnectionService } from '../connection/connection.service';
-import { Post } from './post.model';
 import {
   ConnectionStatus,
   PostAudience,
@@ -17,7 +16,7 @@ export class PostsService {
     private readonly connectionService: ConnectionService,
   ) {}
 
-  async getFeedFor(viewerId: string): Promise<Post[]> {
+  async getFeedFor(viewerId: string) {
     const postIds = await this.getFeedPostIds(viewerId);
     return this.getPostsWithDetails(postIds);
   }
@@ -48,7 +47,7 @@ export class PostsService {
     `;
   }
 
-  async getProfileFeed(username: string, viewerId: string): Promise<Post[]> {
+  async getProfileFeed(username: string, viewerId: string) {
     const visitedUser = await this.usersService.findByUsernameLight(username);
     if (!visitedUser) return [];
 
@@ -60,7 +59,7 @@ export class PostsService {
   private async getPostsForConnectedUser(
     visitedUser: { id: string },
     viewerId: string,
-  ): Promise<Post[]> {
+  ) {
     const connection = await this.connectionService.getApprovedConnection(
       visitedUser.id,
       viewerId,
@@ -74,7 +73,7 @@ export class PostsService {
     return this.getPostsWithDetails(postIds);
   }
 
-  private async getAllPostsByUser(authorId: string): Promise<Post[]> {
+  private async getAllPostsByUser(authorId: string) {
     const posts = await this.prisma.post.findMany({
       where: { authorId },
       include: {
@@ -86,7 +85,7 @@ export class PostsService {
       },
       orderBy: { post_date: 'desc' },
     });
-    return posts as Post[];
+    return posts;
   }
 
   private async getVisiblePostIds(
@@ -105,12 +104,10 @@ export class PostsService {
     `;
   }
 
-  private async getPostsWithDetails(
-    postIds: { id: string }[],
-  ): Promise<Post[]> {
+  private async getPostsWithDetails(postIds: { id: string }[]) {
     if (postIds.length === 0) return [];
 
-    return (await this.prisma.post.findMany({
+    return await this.prisma.post.findMany({
       where: {
         id: { in: postIds.map((r) => r.id) },
       },
@@ -122,13 +119,13 @@ export class PostsService {
         },
       },
       orderBy: { post_date: 'desc' },
-    })) as Post[];
+    });
   }
 
-  async findById(id: string): Promise<Post | null> {
+  async findById(id: string) {
     return this.handleError(
       async () =>
-        (await this.prisma.post.findUnique({
+        await this.prisma.post.findUnique({
           where: { id },
           include: {
             author: {
@@ -137,7 +134,7 @@ export class PostsService {
               },
             },
           },
-        })) as Post | null,
+        }),
       'Error fetching post',
     );
   }
@@ -148,10 +145,10 @@ export class PostsService {
     size: 'rectangle' | 'square';
     type: string;
     authorId: string;
-  }): Promise<Post> {
+  }) {
     return this.handleError(
       async () =>
-        (await this.prisma.post.create({
+        await this.prisma.post.create({
           data,
           include: {
             author: {
@@ -160,15 +157,15 @@ export class PostsService {
               },
             },
           },
-        })) as Post,
+        }),
       'Error creating post',
     );
   }
 
-  async delete(id: string): Promise<Post | null> {
+  async delete(id: string) {
     return this.handleError(
       async () =>
-        (await this.prisma.post.delete({
+        await this.prisma.post.delete({
           where: { id },
           include: {
             author: {
@@ -177,7 +174,7 @@ export class PostsService {
               },
             },
           },
-        })) as Post,
+        }),
       'Error deleting post',
     );
   }

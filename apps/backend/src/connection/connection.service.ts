@@ -110,4 +110,24 @@ export class ConnectionService {
 
     return connection;
   }
+
+  async connectionRequests(ownerId: string): Promise<Connection[]> {
+    const connections = await this.prismaService.connection.findMany({
+      where: {
+        ownerId,
+        status: {
+          in: [ConnectionStatus.PENDING],
+        }, // incoming requests
+      },
+      include: {
+        viewer: {
+          include: {
+            profile: true,
+          },
+        },
+      },
+    });
+
+    return connections;
+  }
 }

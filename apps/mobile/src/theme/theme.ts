@@ -9,8 +9,13 @@ export const theme = {
     surface: "#F5F5F5", // Light gray backgrounds (inputs, cards)
     text: "#000000", // Main text
     textDim: "#8E8E93", // Subtitles
-    border: "#E0E0E0",
+    border: "#E0E0E0", // Borders, dividers
 
+    gray100: "#F5F5F5",
+    gray200: "#E5E5EA",
+    gray300: "#D1D1D6",
+    gray400: "#C7C7CC",
+    gray500: "#AEAEB2",
     gray600: "#6E6E73",
 
     // Feedback
