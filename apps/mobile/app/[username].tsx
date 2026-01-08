@@ -1,15 +1,15 @@
 import { useLocalSearchParams } from "expo-router";
-import { SectionList, StyleSheet, View } from "react-native";
-import { BentoRowRenderer } from "../src/components/profile/BentoRowRenderer";
 import { groupPostsByMonth } from "../src/utils/bentoEngine";
 import { gql, useQuery } from "urql";
 import { useMemo } from "react";
 import { Post } from "@social/types";
 import { Text } from "../src/components/design-kit/Text";
 import { Screen } from "../src/components/design-kit/Screen";
-import { theme } from "../src/theme/theme";
 import ConnectionButton from "../src/components/profile/ConnectionButton";
 import { useProfileConnection } from "../src/hooks/useProfileConnection";
+import ProfileHeader from "../src/components/profile/ProfileHeader";
+import ProfileInfo from "../src/components/profile/ProfileInfo";
+import PostsList from "../src/components/profile/PostsList";
 
 const PROFILE_INFO_QUERY = gql`
   query ($username: String!) {
@@ -18,6 +18,8 @@ const PROFILE_INFO_QUERY = gql`
       username
       profile {
         bio
+        avatar
+        fullName
       }
       connectionToMe {
         group
@@ -93,59 +95,31 @@ export default function Profile() {
   const { profile, connectionToMe } = userProfileInfo?.userByUsername ?? {};
 
   return (
-    <Screen>
-      <View style={styles.headerContainer}>
-        <View style={styles.header}>
-          <Text variant="h1">{username}</Text>
-        </View>
+    <Screen styleContent={{ paddingHorizontal: 0 }} safe={false}>
+      <PostsList
+        sections={sections}
+        isFecthing={isFetchingPosts}
+        error={error}
+        header={
+          <>
+            <ProfileHeader avatar={profile.avatar} />
 
-        <View>
-          <Text>{profile?.bio}</Text>
-          <ConnectionButton
-            isLoading={isLoading}
-            connection={connectionToMe}
-            onConnect={handleConnect}
-            onDisconnect={handleDisconnect}
-          />
-        </View>
-      </View>
-
-      {isFetchingPosts ? (
-        <Text>Loading posts...</Text>
-      ) : (
-        <SectionList
-          sections={sections}
-          renderItem={({ item }) => <BentoRowRenderer row={item} />}
-          keyExtractor={(item) => item.id}
-          stickyHeaderHiddenOnScroll
-          renderSectionHeader={({ section: { title } }) => (
-            <View style={styles.sectionHeader}>
-              <Text variant="h1">{title}</Text>
-            </View>
-          )}
-          contentContainerStyle={{ paddingBottom: 200 }}
-        />
-      )}
+            <ProfileInfo
+              username={username as string}
+              fullName={profile.fullName}
+              bio={profile.bio}
+              actionButton={
+                <ConnectionButton
+                  isLoading={isLoading}
+                  connection={connectionToMe}
+                  onConnect={handleConnect}
+                  onDisconnect={handleDisconnect}
+                />
+              }
+            />
+          </>
+        }
+      />
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: "column",
-    borderBottomWidth: 1,
-    borderColor: theme.colors.border,
-    paddingVertical: theme.spacing.m,
-    marginBottom: theme.spacing.m,
-    gap: theme.spacing.s,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  sectionHeader: {
-    paddingVertical: theme.spacing.s,
-  },
-});

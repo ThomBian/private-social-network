@@ -10,18 +10,6 @@ interface Props {
   styleContent?: ViewStyle;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: theme.spacing.s,
-    display: "flex",
-  },
-});
-
 export const Screen = ({
   children,
   style,
@@ -37,3 +25,15 @@ export const Screen = ({
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: theme.spacing.s,
+    display: "flex",
+  },
+});

@@ -102,7 +102,7 @@ export const Button = ({
         <ActivityIndicator size="small" color={color} />
       ) : (
         !isIconOnly && (
-          <Text variant="button" color={color}>
+          <Text variant="button" color={color} fontWeight="bold">
             {label}
           </Text>
         )

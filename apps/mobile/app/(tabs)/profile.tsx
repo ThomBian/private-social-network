@@ -1,14 +1,17 @@
 import { Screen } from "../../src/components/design-kit/Screen";
-import { Alert, StatusBar, View, StyleSheet, SectionList } from "react-native";
+import { Alert } from "react-native";
 import { Text } from "../../src/components/design-kit/Text";
 import { useAuth } from "../../src/context/AuthContext";
 import { gql, useQuery } from "urql";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { groupPostsByMonth } from "../../src/utils/bentoEngine";
 import { Post } from "@social/types";
-import { Button } from "../../src/components/design-kit/Button";
-import { theme } from "../../src/theme/theme";
-import { BentoRowRenderer } from "../../src/components/profile/BentoRowRenderer";
+import ProfileHeader from "../../src/components/profile/ProfileHeader";
+import ProfileInfo from "../../src/components/profile/ProfileInfo";
+import PostsList from "../../src/components/profile/PostsList";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { MenuActions } from "../../src/types/menuAction";
+import MenuBottomSheet from "../../src/components/profile/MenuBottomSheet";
 
 const PROFILE_INFO_QUERY = gql`
   query ($username: String!) {
@@ -17,6 +20,8 @@ const PROFILE_INFO_QUERY = gql`
       username
       profile {
         bio
+        fullName
+        avatar
       }
       connectionToMe {
         group
@@ -41,6 +46,7 @@ const POSTS_QUERY = gql`
 
 export default function MyProfile() {
   const { signOut, user } = useAuth();
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const [
     { data: userProfileInfo, fetching: profileLoading, error: profileError },
@@ -70,11 +76,10 @@ export default function MyProfile() {
     );
   }
 
-  if (error) {
+  if (error || !user) {
     return (
       <Screen>
         <Text>Error loading profile posts.</Text>
-        <Text>{error.message}</Text>
       </Screen>
     );
   }
@@ -94,64 +99,49 @@ export default function MyProfile() {
     ]);
   };
 
-  const { profile } = userProfileInfo?.userByUsername ?? {};
+  const { profile } = userProfileInfo.userByUsername;
+
+  const handleMenuPress = () => {
+    if (!bottomSheetRef.current) return;
+    bottomSheetRef.current.expand();
+  };
+
+  const menuActions: MenuActions[] = [
+    {
+      label: "Logout",
+      icon: "log-out",
+      onPress: handleLogout,
+      isDestructive: true,
+    },
+  ];
 
   return (
-    <Screen>
-      <StatusBar barStyle="dark-content" />
+    <Screen styleContent={{ paddingHorizontal: 0 }} safe={false}>
+      <PostsList
+        sections={sections}
+        isFecthing={isFetchingPosts}
+        error={error}
+        header={
+          <>
+            <ProfileHeader
+              avatar={profile.avatar}
+              menuActions={menuActions}
+              onMenuPress={handleMenuPress}
+            />
 
-      <View style={styles.headerContainer}>
-        <View style={styles.header}>
-          <Text variant="h1">{user?.username}</Text>
+            <ProfileInfo
+              bio={profile.bio}
+              username={user.username}
+              fullName={profile.fullName}
+            />
+          </>
+        }
+      />
 
-          <Button
-            icon="log-out-outline"
-            onPress={handleLogout}
-            variant="ghost"
-          />
-        </View>
-
-        <View>
-          <Text>{profile?.bio}</Text>
-        </View>
-      </View>
-
-      {isFetchingPosts ? (
-        <Text>Loading posts...</Text>
-      ) : (
-        <SectionList
-          sections={sections}
-          renderItem={({ item }) => <BentoRowRenderer row={item} />}
-          keyExtractor={(item) => item.id}
-          stickyHeaderHiddenOnScroll
-          renderSectionHeader={({ section: { title } }) => (
-            <View style={styles.sectionHeader}>
-              <Text variant="h1">{title}</Text>
-            </View>
-          )}
-          contentContainerStyle={{ paddingBottom: 200 }}
-        />
-      )}
+      <MenuBottomSheet
+        menuActions={menuActions}
+        bottomSheetRef={bottomSheetRef}
+      />
     </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: "column",
-    borderBottomWidth: 1,
-    borderColor: theme.colors.border,
-    paddingVertical: theme.spacing.m,
-    marginBottom: theme.spacing.m,
-    gap: theme.spacing.s,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
-  sectionHeader: {
-    paddingVertical: theme.spacing.s,
-  },
-});

@@ -3,8 +3,9 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
 import { Client, Provider } from "urql";
 import { AuthProvider, useAuth } from "../src/context/AuthContext";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import createUrqlClient from "../src/utils/urql-client";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function RootLayoutNav() {
   const { user, isLoading, token } = useAuth();
@@ -58,8 +59,10 @@ function RootLayoutNav() {
 
 export default function Layout() {
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

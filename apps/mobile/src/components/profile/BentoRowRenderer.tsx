@@ -1,12 +1,14 @@
 import { Dimensions, StyleSheet, View } from "react-native";
 import { BentoRow } from "../../types/bento";
 import BentoTile from "./BentoTile";
+import { theme } from "../../theme/theme";
 
 const SCREEN_WIDTH = Dimensions.get("window").width - 16;
 const GAP = 2;
 
 const styles = StyleSheet.create({
   row: {
+    paddingHorizontal: theme.spacing.s,
     marginBottom: GAP,
     flexDirection: "row",
   },
