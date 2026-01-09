@@ -41,7 +41,7 @@ type Post {
   type: String!
   caption: String!
   author: User!
-  audience: PostAudience!
+  audience: [PostAudience!]!
 }
 
 enum PostSize {
@@ -52,7 +52,7 @@ enum PostSize {
 enum PostAudience {
   FAMILY
   FRIENDS
-  ALL
+  OTHERS
 }
 
 type AuthPayload {
@@ -78,6 +78,6 @@ type Mutation {
   approveFollow(followerId: String!, group: String!): Connection!
   cancelFollow(username: String!): Connection!
   updateProfile(userId: ID!, bio: String!): Profile!
-  createPost(caption: String!, img: String!, size: String!, type: String!): Post!
+  createPost(caption: String!, img: String!, size: String!, type: String!, audiences: [String!]!): Post!
   deletePost(id: String!): Post!
 }

@@ -41,7 +41,7 @@ model Profile {
 enum PostAudience {
   FAMILY
   FRIENDS
-  ALL
+  OTHERS
 }
 
 model Post {
@@ -55,7 +55,7 @@ model Post {
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
 
-  audience PostAudience @default(FAMILY)
+  audience PostAudience[] @default([FAMILY])
 }
 
 enum RelationGroup {

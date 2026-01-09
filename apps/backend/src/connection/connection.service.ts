@@ -55,15 +55,20 @@ export class ConnectionService {
   async approveFollow(
     ownerId: string,
     viewerId: string,
-    group: RelationGroup,
+    group: string,
   ): Promise<Connection> {
+    const validGroup = RelationGroup[group as keyof typeof RelationGroup];
+    if (!validGroup) {
+      throw new Error('Invalid group specified');
+    }
+
     return await this.prismaService.connection.update({
       where: {
         ownerId_viewerId: { ownerId, viewerId },
       },
       data: {
         status: ConnectionStatus.ACCEPTED,
-        group,
+        group: validGroup,
       },
     });
   }

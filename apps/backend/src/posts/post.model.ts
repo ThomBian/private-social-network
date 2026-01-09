@@ -33,6 +33,6 @@ export class Post {
   @Field(() => User)
   author: User;
 
-  @Field(() => PostAudience)
-  audience: PostAudience;
+  @Field(() => [PostAudience])
+  audience: PostAudience[];
 }

@@ -15,12 +15,15 @@ interface ConnectionRequestProps {
       fullName: string;
     };
   };
+  onAcceptConnection: (viewerId: string) => void;
 }
 
 const AVATAR_SIZE = 40;
 
-export default function ConnectionRequest(props: ConnectionRequestProps) {
-  const { viewer } = props;
+export default function ConnectionRequest({
+  viewer,
+  onAcceptConnection,
+}: ConnectionRequestProps) {
   const { profile } = viewer;
   return (
     <TouchableOpacity
@@ -72,9 +75,7 @@ export default function ConnectionRequest(props: ConnectionRequestProps) {
           iconSize={12}
           icon="person-add"
           variant="primary"
-          onPress={() => {
-            alert("Add friend");
-          }}
+          onPress={() => onAcceptConnection(viewer.id)}
           style={{
             height: 44,
             width: 44,

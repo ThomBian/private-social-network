@@ -14,6 +14,7 @@ export interface PostFormData {
   selectedImage: string | null;
   selectedSize: "rectangle" | "square";
   caption: string;
+  audiences: string[];
 }
 
 export default function CreatePostScreen() {
@@ -23,10 +24,12 @@ export default function CreatePostScreen() {
 
   const [currentStep, setCurrentStep] =
     useState<CreatePostStep>("image-selection");
+
   const [formData, setFormData] = useState<PostFormData>({
     selectedImage: photos.length > 0 ? photos[0].uri : null,
     selectedSize: "rectangle",
     caption: "",
+    audiences: ["OTHERS"],
   });
 
   useEffect(() => {
@@ -54,6 +57,7 @@ export default function CreatePostScreen() {
       img: formData.selectedImage!,
       caption: formData.caption,
       size: formData.selectedSize,
+      audiences: formData.audiences,
     });
     if (success) {
       router.back();
@@ -103,8 +107,22 @@ export default function CreatePostScreen() {
             onCaptionChange={(caption) =>
               setFormData((prev) => ({ ...prev, caption }))
             }
-            onSubmit={handleSubmit}
-            isLoading={isCreatingPost}
+            onAudienceChange={(audience) => {
+              if (formData.audiences.includes(audience)) {
+                // Remove audience
+                setFormData((prev) => ({
+                  ...prev,
+                  audiences: prev.audiences.filter((a) => a !== audience),
+                }));
+              } else {
+                // Add audience
+                setFormData((prev) => ({
+                  ...prev,
+                  audiences: [...prev.audiences, audience],
+                }));
+              }
+            }}
+            selectedAudiences={formData.audiences}
           />
         )}
       </View>

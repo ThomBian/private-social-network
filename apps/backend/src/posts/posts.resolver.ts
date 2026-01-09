@@ -39,6 +39,7 @@ export class PostResolver {
     @Args('img', { type: () => String }) img: string,
     @Args('size', { type: () => String }) size: 'rectangle' | 'square',
     @Args('type', { type: () => String }) type: string,
+    @Args('audiences', { type: () => [String] }) audiences: string[],
     @CurrentUser() author: User | null,
   ) {
     if (!author) throw new Error('Unauthorized');
@@ -48,6 +49,7 @@ export class PostResolver {
       img,
       size,
       type,
+      audiences,
       authorId: author.id,
     });
   }

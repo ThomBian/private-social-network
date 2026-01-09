@@ -79,11 +79,22 @@ export const Button = ({
     return theme.spacing.m;
   };
 
+  const getBorderStyle = () => {
+    if (variant === "outline") {
+      return {
+        borderWidth: 1,
+        borderColor: disabled ? theme.colors.surface : theme.colors.border,
+      };
+    }
+    return {};
+  };
+
   const color = getTextColor();
   const iconColor = getIconColor();
   const backgroundColor = getBackgroundColor();
   const paddingHorizontal = getPaddingHorizontal();
   const paddingVertical = getPaddingVertical();
+  const borderStyle = getBorderStyle();
 
   return (
     <TouchableOpacity
@@ -92,7 +103,7 @@ export const Button = ({
       disabled={disabled || loading}
       style={[
         styles.base,
-        { backgroundColor, paddingHorizontal, paddingVertical },
+        { backgroundColor, paddingHorizontal, paddingVertical, ...borderStyle },
         isIconOnly && styles.iconOnly,
         style,
       ]}

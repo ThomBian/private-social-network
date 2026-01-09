@@ -2,13 +2,26 @@ import { gql, useMutation } from "urql";
 import { useAuth } from "../context/AuthContext";
 
 const POST_CREATE_MUTATION = gql`
-  mutation ($img: String!, $caption: String!, $size: String!, $type: String!) {
-    createPost(img: $img, caption: $caption, size: $size, type: $type) {
+  mutation (
+    $img: String!
+    $caption: String!
+    $size: String!
+    $type: String!
+    $audiences: [String!]!
+  ) {
+    createPost(
+      img: $img
+      caption: $caption
+      size: $size
+      type: $type
+      audiences: $audiences
+    ) {
       id
       caption
       img
       size
       type
+      audience
       author {
         id
         username
@@ -21,13 +34,19 @@ interface CreatePostData {
   img: string;
   caption: string;
   size: string;
+  audiences: string[];
 }
 
 export function useCreatePost() {
   const [result, createPost] = useMutation(POST_CREATE_MUTATION);
   const { user } = useAuth();
 
-  const asyncCreatePost = async ({ img, caption, size }: CreatePostData) => {
+  const asyncCreatePost = async ({
+    img,
+    caption,
+    size,
+    audiences,
+  }: CreatePostData) => {
     if (!user || !img) {
       alert("Missing information to create post.");
       return false;
@@ -40,6 +59,7 @@ export function useCreatePost() {
         size,
         caption: caption || "New drop created from mobile app",
         type: "image",
+        audiences,
       });
       if (response.error) {
         alert("Error creating post: " + response.error.message);

@@ -862,16 +862,16 @@ export type ListEnumPostSizeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
- * Reference to a field of type 'PostAudience'
+ * Reference to a field of type 'PostAudience[]'
  */
-export type EnumPostAudienceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostAudience'>
+export type ListEnumPostAudienceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostAudience[]'>
     
 
 
 /**
- * Reference to a field of type 'PostAudience[]'
+ * Reference to a field of type 'PostAudience'
  */
-export type ListEnumPostAudienceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostAudience[]'>
+export type EnumPostAudienceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PostAudience'>
     
 
 

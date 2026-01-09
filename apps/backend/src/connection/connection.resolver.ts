@@ -1,6 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ConnectionService } from './connection.service';
-import { RelationGroup } from '../../generated/prisma/enums';
 import { UseGuards } from '@nestjs/common';
 import { GqlJwtAuthGuard } from '../auth/jwt.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
@@ -30,7 +29,7 @@ export class ConnectionResolver {
     return await this.connectionService.approveFollow(
       owner.id,
       followerId,
-      group as RelationGroup,
+      group,
     );
   }
 

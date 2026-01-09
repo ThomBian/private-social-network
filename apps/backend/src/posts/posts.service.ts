@@ -37,9 +37,9 @@ export class PostsService {
           c."viewerId" = ${viewerId} AND c."status" = ${ConnectionStatus.ACCEPTED}
       
         AND (
-          p."audience" = ${PostAudience.ALL}
-          OR (p."audience" = ${PostAudience.FRIENDS} AND c."group" In (${RelationGroup.FRIENDS}, ${RelationGroup.FAMILY}) )
-          OR (p."audience" = ${PostAudience.FAMILY} AND c."group" = ${RelationGroup.FAMILY})
+          ${PostAudience.OTHERS} = ANY(p."audience")
+          OR (c."group" = ${RelationGroup.FRIENDS} AND ${PostAudience.FRIENDS} = ANY(p."audience"))
+          OR (c."group" = ${RelationGroup.FAMILY} AND ${PostAudience.FAMILY} = ANY(p."audience"))
         )
       )
       SELECT cp."id"
@@ -96,9 +96,9 @@ export class PostsService {
       SELECT p."id" FROM "Post" p
       WHERE p."authorId" = ${authorId}
       AND (
-        p."audience" = ${PostAudience.ALL}
-        OR (p."audience" = ${PostAudience.FRIENDS} AND ${group} in (${RelationGroup.FRIENDS}, ${RelationGroup.FAMILY}) )
-        OR (p."audience" = ${PostAudience.FAMILY} AND ${group} = ${RelationGroup.FAMILY} )
+        ${PostAudience.OTHERS} = ANY(p."audience")
+        OR (${group} = ${RelationGroup.FRIENDS} AND ${PostAudience.FRIENDS} = ANY(p."audience"))
+        OR (${group} = ${RelationGroup.FAMILY} AND ${PostAudience.FAMILY} = ANY(p."audience"))
       )
       ORDER BY p."post_date" DESC
     `;
@@ -144,12 +144,20 @@ export class PostsService {
     img: string;
     size: 'rectangle' | 'square';
     type: string;
+    audiences: string[];
     authorId: string;
   }) {
     return this.handleError(
       async () =>
         await this.prisma.post.create({
-          data,
+          data: {
+            caption: data.caption,
+            img: data.img,
+            size: data.size,
+            type: data.type,
+            audience: data.audiences.map((a) => a as PostAudience),
+            authorId: data.authorId,
+          },
           include: {
             author: {
               include: {

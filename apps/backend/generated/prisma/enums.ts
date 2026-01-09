@@ -20,7 +20,7 @@ export type PostSize = (typeof PostSize)[keyof typeof PostSize]
 export const PostAudience = {
   FAMILY: 'FAMILY',
   FRIENDS: 'FRIENDS',
-  ALL: 'ALL'
+  OTHERS: 'OTHERS'
 } as const
 
 export type PostAudience = (typeof PostAudience)[keyof typeof PostAudience]
