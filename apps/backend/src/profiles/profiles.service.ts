@@ -23,11 +23,19 @@ export class ProfilesService {
     }
   }
 
-  async updateBio(userId: string, bio: string) {
+  async updateBio(
+    userId: string,
+    data: {
+      bio?: string;
+      firstName?: string;
+      lastName?: string;
+      location?: string;
+    },
+  ) {
     try {
       return await this.prisma.profile.update({
         where: { userId },
-        data: { bio },
+        data,
         include: {
           user: {
             include: {

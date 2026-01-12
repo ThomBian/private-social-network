@@ -32,10 +32,12 @@ model User {
 model Profile {
   id       String @id @default(uuid())
   bio      String?
-  fullName String?
+  firstName String?
+  lastName String?
   avatar   String?
   userId   String @unique
   user     User   @relation(fields: [userId], references: [id])
+  location String?
 }
 
 enum PostAudience {

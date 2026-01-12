@@ -27,6 +27,15 @@ const LOGIN_WITH_PHONE_OTP_MUTATION = gql`
         id
         username
         phoneNumber
+        profile {
+          id
+          fullName
+          firstName
+          lastName
+          avatar
+          location
+          bio
+        }
       }
     }
   }
@@ -70,6 +79,7 @@ export default function LoginScreen() {
     if (!result.data) {
       return alert(`Invalid code. Please try again. ${result.error?.message}`);
     }
+
     await signIn(
       result.data.loginWithPhoneCode.user,
       result.data.loginWithPhoneCode.token

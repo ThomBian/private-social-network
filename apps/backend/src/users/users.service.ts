@@ -9,6 +9,7 @@ export class UsersService {
   async findOrCreateUserByPhoneNumber(phoneNumber: string): Promise<User> {
     let user: User | null = await this.prisma.user.findUnique({
       where: { phoneNumber },
+      include: { profile: true },
     });
 
     if (!user) {

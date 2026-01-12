@@ -12,6 +12,7 @@ import PostsList from "../../src/components/profile/PostsList";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { MenuActions } from "../../src/types/menuAction";
 import MenuBottomSheet from "../../src/components/profile/MenuBottomSheet";
+import { useRouter } from "expo-router";
 
 const PROFILE_INFO_QUERY = gql`
   query ($username: String!) {
@@ -47,6 +48,7 @@ const POSTS_QUERY = gql`
 export default function MyProfile() {
   const { signOut, user } = useAuth();
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const router = useRouter();
 
   const [
     { data: userProfileInfo, fetching: profileLoading, error: profileError },
@@ -107,6 +109,13 @@ export default function MyProfile() {
   };
 
   const menuActions: MenuActions[] = [
+    {
+      label: "Edit profile",
+      icon: "pencil",
+      onPress: () => {
+        router.push("/profile/edit");
+      },
+    },
     {
       label: "Logout",
       icon: "log-out",

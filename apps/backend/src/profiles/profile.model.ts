@@ -15,5 +15,14 @@ export class Profile {
   avatar: string;
 
   @Field({ nullable: true })
-  fullName: string;
+  firstName: string;
+
+  @Field({ nullable: true })
+  lastName: string;
+
+  @Field({ nullable: true })
+  fullName?: string;
+
+  @Field({ nullable: true })
+  location: string;
 }

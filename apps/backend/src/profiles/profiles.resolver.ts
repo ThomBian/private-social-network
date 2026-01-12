@@ -1,6 +1,14 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { ProfilesService } from './profiles.service';
 import { Profile } from './profile.model';
+import { UpdateProfileInput } from './input-type/update-profile.input';
 
 @Resolver(() => Profile)
 export class ProfilesResolver {
@@ -16,8 +24,16 @@ export class ProfilesResolver {
   @Mutation(() => Profile)
   async updateProfile(
     @Args('userId', { type: () => ID }) userId: string,
-    @Args('bio', { type: () => String }) bio: string,
+    @Args('data') data: UpdateProfileInput,
   ): Promise<Profile> {
-    return this.profilesService.updateBio(userId, bio) as Promise<Profile>;
+    return this.profilesService.updateBio(userId, data) as Promise<Profile>;
+  }
+
+  @ResolveField(() => String, { name: 'fullName' })
+  resolveFullName(profile: Profile): string {
+    const firstname = profile?.firstName || '';
+    const lastName = profile.lastName || '';
+
+    return `${firstname} ${lastName}`.trim();
   }
 }
