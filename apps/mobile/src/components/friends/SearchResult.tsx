@@ -4,7 +4,17 @@ import { useRouter } from "expo-router";
 import { theme } from "../../theme/theme";
 import { useAuth } from "../../context/AuthContext";
 
-export default function SearchResult({ username }: { username: string }) {
+interface SearchResultProps {
+  username: string;
+  fullName?: string;
+  avatar?: string;
+}
+
+export default function SearchResult({
+  username,
+  fullName,
+  avatar,
+}: SearchResultProps) {
   const router = useRouter();
   const { user } = useAuth();
   const isCurrentUser = user?.username === username;
@@ -12,7 +22,8 @@ export default function SearchResult({ username }: { username: string }) {
 
   return (
     <TouchableOpacity onPress={() => router.push(url)} style={styles.container}>
-      <Text style={{ fontWeight: 600 }}>{username}</Text>
+      <Text fontWeight="bold">{fullName}</Text>
+      <Text variant="caption">{username}</Text>
     </TouchableOpacity>
   );
 }
@@ -20,5 +31,6 @@ export default function SearchResult({ username }: { username: string }) {
 const styles = StyleSheet.create({
   container: {
     padding: theme.spacing.s,
+    gap: theme.spacing.xs,
   },
 });

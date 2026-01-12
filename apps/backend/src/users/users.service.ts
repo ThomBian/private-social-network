@@ -83,10 +83,15 @@ export class UsersService {
   async queryUsers(query: string): Promise<User[]> {
     return this.prisma.user.findMany({
       where: {
-        username: {
-          contains: query,
-          mode: 'insensitive',
-        },
+        OR: [
+          { username: { contains: query, mode: 'insensitive' } },
+          { phoneNumber: { contains: query, mode: 'insensitive' } },
+          { profile: { firstName: { contains: query, mode: 'insensitive' } } },
+          { profile: { lastName: { contains: query, mode: 'insensitive' } } },
+        ],
+      },
+      include: {
+        profile: true,
       },
       take: 10,
     });

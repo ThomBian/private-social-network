@@ -14,6 +14,10 @@ const SEARCH_USERS_QUERY = gql`
     searchUsers(query: $query) {
       id
       username
+      profile {
+        avatar
+        fullName
+      }
     }
   }
 `;
@@ -48,6 +52,9 @@ const ACCEPT_FOLLOW_MUTATION = gql`
 interface SearchUserResult {
   username: string;
   id: string;
+  profile: {
+    fullName?: string;
+  };
 }
 
 export default function SearchUser() {
@@ -115,7 +122,11 @@ export default function SearchUser() {
       {searchQuery &&
         !fetching &&
         matchingUsers.map((user) => (
-          <SearchResult key={user.id} username={user.username} />
+          <SearchResult
+            key={user.id}
+            username={user.username}
+            fullName={user.profile.fullName}
+          />
         ))}
 
       {!searchQuery && (
